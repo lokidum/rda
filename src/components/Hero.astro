@@ -95,8 +95,8 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     max-width: 760px;
     max-height: 760px;
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.5;
+    filter: blur(100px);
+    opacity: 0.32;
     pointer-events: none;
   }
   .glow.g1 {
@@ -203,6 +203,9 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     vertical-align: bottom;
     padding-bottom: 0.08em;
     margin-bottom: -0.08em;
+    /* word spacing: the headline words are mapped, so there is no whitespace
+       text node between the inline-block word boxes. This restores it. */
+    margin-right: 0.26em;
   }
   #hero h1 .word > span {
     display: inline-block;

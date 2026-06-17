@@ -213,10 +213,38 @@ const breadcrumb = {
     <BottomBar />
     <WhatsAppWidget />
 
+    <div id="wa-toast" role="status" aria-live="polite">Details copied. If WhatsApp opens empty, just paste.</div>
+
     <script>
       // Auto-updating copyright year (kept out of build output so it never goes stale).
       const yr = document.getElementById('yr');
       if (yr) yr.textContent = String(new Date().getFullYear());
+
+      // WhatsApp reliability: some devices / WhatsApp Web ignore the ?text=
+      // prefill. So on any WhatsApp click we also copy the message to the
+      // clipboard, and gently tell the visitor they can paste it. The link
+      // still opens normally and prefills wherever that works.
+      const waToast = document.getElementById('wa-toast');
+      let waToastTimer: ReturnType<typeof setTimeout>;
+      function showWaToast() {
+        if (!waToast) return;
+        waToast.classList.add('show');
+        clearTimeout(waToastTimer);
+        waToastTimer = setTimeout(() => waToast.classList.remove('show'), 4500);
+      }
+      document.addEventListener('click', (e) => {
+        const el = e.target as HTMLElement | null;
+        const link = el?.closest?.('a[href*="wa.me"]') as HTMLAnchorElement | null;
+        if (!link) return;
+        try {
+          const text = new URL(link.href).searchParams.get('text');
+          if (text && navigator.clipboard?.writeText) {
+            navigator.clipboard.writeText(text).then(showWaToast).catch(() => {});
+          }
+        } catch {
+          /* malformed url, let the link proceed */
+        }
+      });
     </script>
   </body>
 </html>
@@ -301,6 +329,38 @@ const breadcrumb = {
     .foot-grid {
       grid-template-columns: 1fr;
       gap: 36px;
+    }
+  }
+
+  /* WhatsApp "details copied" hint */
+  #wa-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 16px);
+    z-index: 200;
+    background: var(--ink);
+    color: var(--cream-on-dark);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: var(--sh-lg);
+    max-width: min(90vw, 360px);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  }
+  #wa-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  @media (max-width: 680px) {
+    /* sit above the fixed mobile call/WhatsApp bar */
+    #wa-toast {
+      bottom: calc(80px + env(safe-area-inset-bottom));
     }
   }
 </style>
