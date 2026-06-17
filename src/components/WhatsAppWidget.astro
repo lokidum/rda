@@ -1,0 +1,88 @@
+---
+import { brand, waLink, waMessages } from '../data/content';
+import WaIcon from './WaIcon.astro';
+---
+
+<a
+  id="wa-float"
+  href={waLink(waMessages.book)}
+  target="_blank"
+  rel="noopener"
+  aria-label={`Chat with ${brand.name} on WhatsApp`}
+>
+  <span class="ping" aria-hidden="true"></span>
+  <span class="bubble" aria-hidden="true">Chat with us, we reply fast</span>
+  <WaIcon />
+</a>
+
+<style is:global>
+  #wa-float {
+    position: fixed;
+    bottom: max(26px, env(safe-area-inset-bottom));
+    right: 26px;
+    z-index: 95;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--wa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glow-wa);
+    transition: scale 0.25s var(--ease);
+    scale: 1;
+  }
+  #wa-float:hover {
+    scale: 1.08;
+  }
+  #wa-float:active {
+    scale: 0.95;
+  }
+  #wa-float svg {
+    width: 30px;
+    height: 30px;
+    fill: #fff;
+  }
+  #wa-float .ping {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--wa);
+    animation: wa-ping 2.6s infinite;
+  }
+  @keyframes wa-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+  #wa-float .bubble {
+    position: absolute;
+    right: 72px;
+    bottom: 11px;
+    background: var(--cream-2);
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 14px 14px 4px 14px;
+    box-shadow: var(--sh-md);
+    white-space: nowrap;
+    border: 1px solid var(--hair);
+  }
+  /* hide the floating bubble on phones, the bottom bar takes over */
+  @media (max-width: 680px) {
+    #wa-float {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #wa-float .ping {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import { areas } from '../data/content';
+import SuburbChip from './SuburbChip.astro';
+import Placeholder from './Placeholder.astro';
+---
+
+<section id="areas">
+  <div class="wrap areas-grid">
+    <div>
+      <div class="label">Where we drive</div>
+      <h2 class="reveal">Across the wider <span class="it">Adelaide</span> metro.</h2>
+      <p class="areas-intro reveal">{areas.intro}</p>
+      <div class="suburbs reveal">
+        {areas.suburbs.map((s) => <SuburbChip suburb={s} />)}
+        <SuburbChip generic={true} />
+      </div>
+      <p class="areas-note">{areas.note}</p>
+    </div>
+    <Placeholder slot="adelaide" label="Adelaide skyline or map" class="parallax frame reveal" icon="pin" />
+  </div>
+</section>
+
+<style>
+  #areas {
+    padding: 128px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .areas-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(40px, 6vw, 90px);
+    align-items: center;
+  }
+  .areas-grid h2 {
+    font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+  }
+  .areas-intro {
+    margin-top: 18px;
+    color: var(--text-2);
+    font-size: 0.98rem;
+    max-width: 40ch;
+  }
+  .areas-grid :global(.ph) {
+    aspect-ratio: 16 / 10;
+    border-radius: 24px;
+  }
+  .areas-note {
+    margin-top: 18px;
+    font-size: 0.86rem;
+    color: var(--text-2);
+  }
+  .suburbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 30px;
+  }
+  @media (max-width: 920px) {
+    .areas-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 680px) {
+    #areas {
+      padding: 88px 0;
+    }
+  }
+</style>

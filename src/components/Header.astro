@@ -1,0 +1,304 @@
+---
+import { brand, nav, waLink, waMessages } from '../data/content';
+import WaIcon from './WaIcon.astro';
+---
+
+<div id="scrollbar" aria-hidden="true"></div>
+
+<header id="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#hero" aria-label={`${brand.name} home`}>
+      <span class="brand-logo" aria-hidden="true"></span>
+      <span class="visually-hidden">{brand.name}</span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links" id="navlinks">
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn wa" href={waLink(waMessages.book)} target="_blank" rel="noopener">
+        <WaIcon />
+        <span>Book a lesson</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg class="bars" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        <svg class="x" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  /* scroll progress bar */
+  #scrollbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    z-index: 120;
+    background: linear-gradient(90deg, var(--maroon), var(--maroon-bright) 60%, var(--gold));
+    box-shadow: 0 0 14px rgba(242, 206, 22, 0.5);
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s, border-color 0.4s, transform 0.45s var(--ease);
+    --brandc: var(--cream-on-dark);
+    color: var(--cream-on-dark);
+  }
+  header.scrolled {
+    --brandc: var(--maroon);
+    color: var(--ink);
+    background: rgba(244, 237, 223, 0.86);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    border-color: var(--hair);
+    box-shadow: 0 10px 40px -22px rgba(92, 21, 11, 0.3);
+  }
+  header.hidden {
+    transform: translateY(-100%);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 74px;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    z-index: 112;
+    color: var(--brandc);
+  }
+  /* Real RDA logo, recoloured to the header state via currentColor (mask fill).
+     Cream over the hero, maroon once scrolled, cream again over the mobile menu. */
+  .brand-logo {
+    display: block;
+    height: 50px;
+    aspect-ratio: 156.1 / 142.19;
+    background-color: currentColor;
+    -webkit-mask: url('/logo.svg') center / contain no-repeat;
+    mask: url('/logo.svg') center / contain no-repeat;
+    transition: background-color 0.4s;
+  }
+  body.menu-open .brand {
+    color: var(--cream-on-dark);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.88rem;
+    opacity: 0.85;
+    transition: opacity 0.25s;
+    position: relative;
+    padding: 6px 0;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease);
+  }
+  .nav-links a:hover {
+    opacity: 1;
+  }
+  .nav-links a:hover::after,
+  .nav-links a.active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .nav-links a.active {
+    opacity: 1;
+  }
+  header .nav .btn {
+    padding: 11px 22px;
+    font-size: 0.84rem;
+  }
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 112;
+    color: inherit;
+  }
+  .menu-toggle svg {
+    width: 26px;
+    height: 26px;
+    stroke: currentColor;
+  }
+  .menu-toggle .x {
+    display: none;
+  }
+  body.menu-open .menu-toggle .bars {
+    display: none;
+  }
+  body.menu-open .menu-toggle .x {
+    display: block;
+  }
+  body.menu-open .menu-toggle {
+    color: var(--cream-on-dark);
+  }
+
+  /* full-screen mobile menu (the nav-links repositioned) */
+  @media (max-width: 680px) {
+    .nav-links {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      background: linear-gradient(170deg, var(--dark), #2e1c10);
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      padding: 90px 9vw 120px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-links.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-links li {
+      list-style: none;
+      overflow: hidden;
+    }
+    .nav-links a {
+      display: block;
+      padding: 14px 0;
+      opacity: 1;
+      color: var(--cream-on-dark);
+      font-family: var(--font-d);
+      font-weight: 600;
+      font-size: clamp(1.7rem, 8vw, 2.4rem);
+      letter-spacing: -0.01em;
+      transform: translateY(110%);
+      transition: transform 0.6s var(--ease);
+    }
+    .nav-links a::after {
+      display: none;
+    }
+    .nav-links.open a {
+      transform: translateY(0);
+    }
+    .nav-links li:nth-child(1) a { transition-delay: 0.06s; }
+    .nav-links li:nth-child(2) a { transition-delay: 0.12s; }
+    .nav-links li:nth-child(3) a { transition-delay: 0.18s; }
+    .nav-links li:nth-child(4) a { transition-delay: 0.24s; }
+    .nav-links li:nth-child(5) a { transition-delay: 0.3s; }
+    .menu-toggle { display: block; }
+    .nav .btn span { display: none; }
+    .nav .btn { padding: 11px 14px; }
+    .brand-logo { height: 42px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #scrollbar { display: none; }
+    .nav-links a { transform: none; }
+  }
+</style>
+
+<script>
+  const topbar = document.getElementById('topbar');
+  const scrollbar = document.getElementById('scrollbar');
+  const menuToggle = document.getElementById('menuToggle');
+  const navlinks = document.getElementById('navlinks');
+
+  /* scroll progress + header hide on scroll down, show on scroll up */
+  let lastY = 0;
+  let ticking = false;
+  function onScroll() {
+    const y = window.scrollY;
+    if (topbar) topbar.classList.toggle('scrolled', y > 40);
+    if (scrollbar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scrollbar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+    }
+    if (topbar && !document.body.classList.contains('menu-open')) {
+      if (y > lastY && y > 420) topbar.classList.add('hidden');
+      else topbar.classList.remove('hidden');
+    }
+    lastY = y;
+    ticking = false;
+  }
+  addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(onScroll);
+      }
+    },
+    { passive: true }
+  );
+
+  /* mobile menu */
+  function setMenu(open: boolean) {
+    if (!navlinks || !topbar || !menuToggle) return;
+    navlinks.classList.toggle('open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    if (open) topbar.classList.remove('hidden');
+  }
+  menuToggle?.addEventListener('click', () =>
+    setMenu(!navlinks?.classList.contains('open'))
+  );
+  navlinks?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => setMenu(false))
+  );
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setMenu(false);
+  });
+
+  /* scrollspy: underline the nav item for the section in view */
+  const links = Array.from(
+    navlinks?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]') ?? []
+  );
+  const map: Record<string, HTMLAnchorElement> = {};
+  links.forEach((a) => {
+    map[a.getAttribute('href')!.slice(1)] = a;
+  });
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting && map[en.target.id]) {
+          links.forEach((a) => a.classList.remove('active'));
+          map[en.target.id].classList.add('active');
+        }
+      });
+    },
+    { rootMargin: '-38% 0px -55% 0px' }
+  );
+  Object.keys(map).forEach((id) => {
+    const sec = document.getElementById(id);
+    if (sec) spy.observe(sec);
+  });
+</script>

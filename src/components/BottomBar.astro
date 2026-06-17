@@ -1,0 +1,41 @@
+---
+import { tel, waLink, waMessages } from '../data/content';
+import WaIcon from './WaIcon.astro';
+---
+
+<div id="mobilebar">
+  <a class="btn line" href={tel}>Call</a>
+  <a class="btn wa" href={waLink(waMessages.book)} target="_blank" rel="noopener">
+    <WaIcon />
+    Book on WhatsApp
+  </a>
+</div>
+
+<style is:global>
+  #mobilebar {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 96;
+    background: rgba(252, 248, 238, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--hair);
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    grid-template-columns: 1fr 1.4fr;
+    gap: 10px;
+    box-shadow: 0 -12px 40px -18px rgba(33, 19, 9, 0.3);
+  }
+  #mobilebar .btn {
+    justify-content: center;
+    padding: 14px 10px;
+    font-size: 0.9rem;
+  }
+  @media (max-width: 680px) {
+    #mobilebar {
+      display: grid;
+    }
+  }
+</style>

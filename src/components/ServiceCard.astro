@@ -1,0 +1,157 @@
+---
+import { waLink } from '../data/content';
+import type { Service } from '../data/content';
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+const isQuote = !service.price.startsWith('$');
+---
+
+<article class="svc reveal">
+  <div class="num">
+    {service.num}
+    {service.popular && <span class="pop">Most popular</span>}
+  </div>
+  <h3>{service.title}</h3>
+  <p>{service.blurb}</p>
+  <div class:list={['price', { quote: isQuote }]}>
+    {service.price}<small>{service.unit}</small>
+  </div>
+  <a class="go" href={waLink(service.waMessage)} target="_blank" rel="noopener">
+    {service.ctaLabel}
+    <span class="circ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+    </span>
+  </a>
+</article>
+
+<style>
+  .svc {
+    background: var(--cream-2);
+    border: 1px solid var(--hair);
+    border-radius: 22px;
+    padding: 36px 28px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--sh-sm);
+    transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.3s;
+  }
+  .svc::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(90deg, var(--maroon), var(--maroon-bright) 55%, var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease);
+  }
+  .svc:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sh-lg);
+    border-color: rgba(138, 36, 24, 0.3);
+  }
+  .svc:hover::after {
+    transform: scaleX(1);
+  }
+  .num {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    color: var(--maroon);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .pop {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    box-shadow: var(--glow-gold);
+    white-space: nowrap;
+  }
+  .svc h3 {
+    font-size: 1.42rem;
+    font-weight: 600;
+    margin: 24px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .svc p {
+    font-size: 0.9rem;
+    color: var(--text-2);
+    flex: 1;
+  }
+  .price {
+    font-family: var(--font-d);
+    font-size: 2.7rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 26px;
+    line-height: 1;
+    color: var(--ink);
+    transition: color 0.3s;
+  }
+  .price.quote {
+    font-size: 1.6rem;
+    padding-top: 14px;
+  }
+  .svc:hover .price {
+    color: var(--maroon);
+  }
+  .price small {
+    font-family: var(--font-b);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .go {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.86rem;
+    color: var(--maroon);
+  }
+  .circ {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--maroon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s;
+  }
+  .circ svg {
+    width: 15px;
+    height: 15px;
+  }
+  .svc:hover .circ {
+    background: var(--maroon);
+    color: var(--cream-2);
+    transform: translateX(4px);
+    box-shadow: var(--glow-maroon);
+  }
+  @media (hover: none) {
+    .svc:hover {
+      transform: none;
+    }
+  }
+</style>

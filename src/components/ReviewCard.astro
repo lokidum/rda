@@ -1,0 +1,89 @@
+---
+import type { Review } from '../data/content';
+
+interface Props {
+  review: Review;
+}
+const { review } = Astro.props;
+const initials = review.name.trim().slice(0, 2).toUpperCase();
+---
+
+<article class="t-card">
+  <div class="stars" aria-label="Five stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+  <p>{review.text}</p>
+  <div class="who">
+    <span class="ava" aria-hidden="true">{initials}</span>
+    <span class="who-meta">
+      <b>{review.name}</b>
+      <span>{review.role}</span>
+    </span>
+  </div>
+</article>
+
+<style>
+  .t-card {
+    break-inside: avoid;
+    background: var(--cream-2);
+    border: 1px solid var(--hair);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 18px;
+    box-shadow: var(--sh-sm);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.3s;
+  }
+  .t-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sh-md);
+    border-color: rgba(138, 36, 24, 0.3);
+  }
+  .stars {
+    color: var(--maroon);
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+  }
+  .t-card p {
+    font-size: 0.92rem;
+    color: #473228;
+    line-height: 1.65;
+  }
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .ava {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, var(--maroon-bright), var(--maroon-deep));
+    color: var(--cream-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    flex: none;
+    font-family: var(--font-d);
+    font-style: italic;
+    box-shadow: var(--sh-sm);
+  }
+  .who-meta b {
+    font-size: 0.86rem;
+    display: block;
+  }
+  .who-meta span {
+    font-size: 0.7rem;
+    color: var(--text-2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.85;
+  }
+  @media (hover: none) {
+    .t-card:hover {
+      transform: none;
+    }
+  }
+</style>

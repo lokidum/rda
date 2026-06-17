@@ -1,0 +1,99 @@
+---
+import { reviews, featureQuote, reviewNote } from '../data/content';
+import ReviewCard from './ReviewCard.astro';
+---
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="label">Word on the street</div>
+    <div class="feature-quote reveal">
+      <div class="stars" aria-label="Five stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+      <blockquote set:html={`&ldquo;${featureQuote.text}&rdquo;`}></blockquote>
+      <cite>{featureQuote.cite}</cite>
+    </div>
+    <div class="masonry">
+      {reviews.map((r) => <ReviewCard review={r} />)}
+    </div>
+    <p class="review-note">{reviewNote}</p>
+  </div>
+</section>
+
+<style>
+  #reviews {
+    padding: 138px 0 118px;
+    border-top: 1px solid var(--hair);
+    overflow: hidden;
+    position: relative;
+  }
+  #reviews::before {
+    content: '';
+    position: absolute;
+    width: 60vw;
+    height: 40vw;
+    max-width: 800px;
+    max-height: 520px;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(138, 36, 24, 0.08), transparent 65%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .feature-quote {
+    max-width: 880px;
+    margin: 0 auto 66px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .feature-quote .stars {
+    color: var(--maroon);
+    letter-spacing: 7px;
+    font-size: 1.15rem;
+    margin-bottom: 28px;
+    text-shadow: 0 0 24px rgba(138, 36, 24, 0.35);
+  }
+  .feature-quote blockquote {
+    font-family: var(--font-d);
+    font-weight: 500;
+    font-size: var(--fs-display-m);
+    line-height: 1.26;
+    letter-spacing: -0.015em;
+  }
+  .feature-quote cite {
+    display: block;
+    margin-top: 26px;
+    font-style: normal;
+    font-size: 0.76rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    font-weight: 700;
+  }
+  .masonry {
+    columns: 3;
+    column-gap: 18px;
+  }
+  .review-note {
+    text-align: center;
+    font-size: 0.76rem;
+    color: var(--text-2);
+    margin-top: 20px;
+  }
+  @media (max-width: 920px) {
+    .masonry {
+      columns: 2;
+    }
+  }
+  @media (max-width: 680px) {
+    #reviews {
+      padding: 88px 0;
+    }
+    .masonry {
+      columns: 1;
+    }
+    .feature-quote {
+      margin-bottom: 48px;
+    }
+  }
+</style>

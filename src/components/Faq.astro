@@ -1,0 +1,59 @@
+---
+import { faq, faqAside } from '../data/content';
+import FaqItem from './FaqItem.astro';
+---
+
+<section id="faq">
+  <div class="wrap faq-grid">
+    <div>
+      <div class="label">{faqAside.label}</div>
+      <h2 class="reveal">{faqAside.heading} <span class="it">{faqAside.accent}</span></h2>
+      <p class="faq-intro reveal">{faqAside.intro}</p>
+    </div>
+    <div class="faq reveal">
+      {faq.map((f) => <FaqItem q={f.q} a={f.a} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  #faq {
+    padding: 128px 0 148px;
+    border-top: 1px solid var(--hair);
+  }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: start;
+  }
+  .faq-grid h2 {
+    font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+    position: sticky;
+    top: 120px;
+  }
+  .faq-intro {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    margin-top: 18px;
+    max-width: 34ch;
+  }
+  .faq {
+    display: grid;
+    gap: 12px;
+  }
+  @media (max-width: 920px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+    .faq-grid h2 {
+      position: relative;
+      top: 0;
+    }
+  }
+  @media (max-width: 680px) {
+    #faq {
+      padding: 88px 0;
+    }
+  }
+</style>

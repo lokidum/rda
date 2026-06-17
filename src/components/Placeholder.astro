@@ -1,0 +1,68 @@
+---
+import { images } from '../data/content';
+import { hasImage } from '../lib/images';
+
+interface Props {
+  /** key into the images map in content.ts */
+  slot: keyof typeof images;
+  /** short bold title shown on the placeholder frame */
+  label: string;
+  /** extra classes for the .ph element (e.g. "frame parallax") */
+  class?: string;
+  dark?: boolean;
+  icon?: 'camera' | 'pin';
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'auto';
+  /** suppress the centered label (used for the full-bleed hero backdrop) */
+  bare?: boolean;
+}
+
+const {
+  slot,
+  label,
+  class: cls = '',
+  dark = false,
+  icon = 'camera',
+  loading = 'lazy',
+  fetchpriority,
+  bare = false,
+} = Astro.props;
+
+const img = images[slot];
+const real = hasImage(img.file);
+---
+
+<div class:list={['ph', { dark }, cls]}>
+  {!bare && (
+  <div class="ph-label">
+    {
+      icon === 'pin' ? (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M12 21c4.5-3.6 8-7 8-11a8 8 0 1 0-16 0c0 4 3.5 7.4 8 11Z" />
+          <circle cx="12" cy="10" r="2.6" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+          <circle cx="12" cy="13.5" r="3.5" />
+        </svg>
+      )
+    }
+    <b>{label}</b>
+    <span>images/{img.file} &middot; {img.w} x {img.h} &middot; {img.shot}</span>
+  </div>
+  )}
+  {
+    real && (
+      <img
+        src={`/images/${img.file}`}
+        alt={img.alt}
+        width={img.w}
+        height={img.h}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding="async"
+      />
+    )
+  }
+</div>

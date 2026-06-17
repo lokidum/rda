@@ -1,0 +1,205 @@
+---
+import { fleet } from '../data/content';
+import Placeholder from './Placeholder.astro';
+
+const specIcons = [
+  // dual control
+  '<path d="M9 12l2 2 4-5"/><circle cx="12" cy="12" r="9"/>',
+  // insured (shield)
+  '<path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4Z"/>',
+  // warm up (clock)
+  '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+];
+---
+
+<section id="fleet">
+  <div class="glow g1" aria-hidden="true"></div>
+  <div class="glow g2" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="label on-dark">{fleet.label}</div>
+    <h2 class="reveal">One car. The one you<br />learn in and <span class="it">test in.</span></h2>
+    <p class="fleet-lede reveal">{fleet.body}</p>
+    <div class="fleet-grid">
+      <div class="fleet-media reveal">
+        <Placeholder slot="car" label="Academy car" class="dark parallax frame" dark={true} />
+      </div>
+      <div>
+        {
+          fleet.specs.map((spec, i) => (
+            <div class="spec reveal">
+              <span class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" set:html={specIcons[i]} />
+              </span>
+              <div>
+                <b>{spec.title}</b>
+                <p>{spec.body}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div class="fleet-stats">
+      {
+        fleet.stats.map((s) => (
+          <div class="reveal">
+            <b><em data-count={s.count}>0</em>{s.suffix}</b>
+            <span>{s.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  #fleet {
+    background: var(--dark);
+    color: var(--cream-on-dark);
+    padding: 148px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+  .glow.g1 {
+    width: 46vw;
+    height: 46vw;
+    max-width: 640px;
+    max-height: 640px;
+    background: radial-gradient(circle, rgba(138, 36, 24, 0.5), transparent 65%);
+    top: -12%;
+    right: -10%;
+    opacity: 0.65;
+  }
+  .glow.g2 {
+    width: 36vw;
+    height: 36vw;
+    max-width: 520px;
+    max-height: 520px;
+    background: radial-gradient(circle, rgba(242, 206, 22, 0.16), transparent 65%);
+    bottom: -10%;
+    left: -8%;
+  }
+  #fleet h2 {
+    color: var(--cream-on-dark);
+    font-size: var(--fs-display-l);
+    max-width: 16ch;
+    letter-spacing: -0.02em;
+  }
+  #fleet h2 .it {
+    color: var(--gold-soft);
+  }
+  .fleet-lede {
+    color: var(--soft-on-dark);
+    max-width: 48ch;
+    margin-top: 22px;
+    font-size: 0.98rem;
+  }
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(40px, 6vw, 90px);
+    align-items: center;
+    margin-top: 56px;
+  }
+  .fleet-media .ph {
+    aspect-ratio: 16 / 11.5;
+    border-radius: 24px;
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.7), 0 0 70px -18px rgba(138, 36, 24, 0.45);
+  }
+  .spec {
+    border-top: 1px solid var(--hair-light);
+    padding: 26px 0;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    transition: padding-left 0.35s var(--ease);
+  }
+  .spec:hover {
+    padding-left: 10px;
+  }
+  .spec:last-child {
+    border-bottom: 1px solid var(--hair-light);
+  }
+  .spec .ic {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border: 1px solid rgba(242, 206, 22, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-soft);
+    transition: box-shadow 0.35s, background 0.35s;
+  }
+  .spec:hover .ic {
+    box-shadow: var(--glow-gold);
+    background: rgba(242, 206, 22, 0.08);
+  }
+  .spec .ic svg {
+    width: 19px;
+    height: 19px;
+  }
+  .spec b {
+    display: block;
+    font-family: var(--font-d);
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  .spec p {
+    font-size: 0.89rem;
+    color: var(--soft-on-dark);
+  }
+  .fleet-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 88px;
+    border-top: 1px solid var(--hair-light);
+    padding-top: 50px;
+  }
+  .fleet-stats b {
+    display: block;
+    font-family: var(--font-d);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+  }
+  .fleet-stats em {
+    font-style: normal;
+    color: var(--gold-soft);
+    text-shadow: var(--glow-gold);
+  }
+  .fleet-stats span {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft-on-dark);
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+  }
+  @media (max-width: 920px) {
+    .fleet-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 680px) {
+    #fleet {
+      padding: 98px 0;
+    }
+    .fleet-stats {
+      grid-template-columns: 1fr;
+      gap: 34px;
+    }
+  }
+</style>

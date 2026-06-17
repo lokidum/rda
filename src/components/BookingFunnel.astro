@@ -1,0 +1,565 @@
+---
+import { funnel, phone, tel, waLink, waMessages } from '../data/content';
+import WaIcon from './WaIcon.astro';
+---
+
+<section id="book">
+  <div class="glow g1" aria-hidden="true"></div>
+  <div class="glow g2" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="label">Book your first lesson</div>
+    <div class="book-grid">
+      <div class="book-pitch">
+        <h2 class="reveal">Sixty seconds.<br />Then we <span class="it">drive.</span></h2>
+        <p class="reveal">
+          Answer a few quick questions and we will open WhatsApp with your message
+          ready to send. The little car tracks your progress. When it reaches the
+          flag, you are done.
+        </p>
+        <div class="alt reveal">
+          Prefer to talk it through? Call <a href={tel}>{phone.display}</a>, any day
+          of the week. Or just message <a href={waLink(waMessages.open)} target="_blank" rel="noopener">WhatsApp</a> in your own words.
+        </div>
+      </div>
+
+      <div class="book-shell reveal">
+        <div class="progress" aria-hidden="true">
+          <div class="road-line"></div>
+          <span class="pcar" id="pcar">
+            <svg viewBox="0 0 120 56" aria-hidden="true">
+              <ellipse cx="60" cy="50" rx="46" ry="4.5" fill="rgba(0,0,0,.35)"></ellipse>
+              <rect x="42" y="2" width="34" height="14" rx="4.5" fill="#F2CE16" stroke="#211309" stroke-width="2"></rect>
+              <text x="59" y="12.5" text-anchor="middle" font-size="9" font-weight="900" font-family="Arial" fill="#211309">RAMS</text>
+              <path d="M59 16 v4" stroke="#211309" stroke-width="2.5"></path>
+              <path d="M10 40 L14 30 C17 23 24 19 33 19 L60 19 C72 19 80 23 87 29 L98 33 C106 35 110 37 110 41 L108 46 L12 46 Z" fill="#F4F6F8" stroke="#B9BFC6" stroke-width="1.5"></path>
+              <path d="M36 21 L58 21 L58 31 L31 31 Z" fill="#2A3540"></path>
+              <path d="M62 21 L80 21 C85 24 88 27 90 30 L62 31 Z" fill="#2A3540"></path>
+              <circle cx="33" cy="45" r="8.5" fill="#15100C"></circle><circle cx="33" cy="45" r="3.5" fill="#8E969E"></circle>
+              <circle cx="88" cy="45" r="8.5" fill="#15100C"></circle><circle cx="88" cy="45" r="3.5" fill="#8E969E"></circle>
+              <rect x="104" y="36" width="6" height="4" rx="2" fill="#DBE7EF"></rect>
+            </svg>
+          </span>
+          <svg class="flagend" viewBox="0 0 24 24" fill="currentColor"><path d="M5 21V4a1 1 0 0 1 1-1h11.6a.5.5 0 0 1 .4.8L15 8l3 4.2a.5.5 0 0 1-.4.8H7v8H5Z"></path></svg>
+        </div>
+
+        <form class="book-body" id="bookForm" novalidate>
+          <!-- Step 1: service (compulsory) -->
+          <div class="bstep active" data-step="1">
+            <div class="k">Step 1 of 4 &middot; Required</div>
+            <h4>What do you need?</h4>
+            <p class="hint">Pick the option closest to your situation.</p>
+            <div class="opt-grid" id="serviceOpts">
+              {
+                funnel.serviceOptions.map((o) => (
+                  <label class="opt">
+                    <input type="radio" name="service" value={o.value} />
+                    <span>{o.label}<small>{o.hint}</small></span>
+                  </label>
+                ))
+              }
+            </div>
+            <p class="step-err" id="errService">Just need to know what you are after to continue.</p>
+            <div class="bnav"><span></span><button type="button" class="btn" data-action="next">Next <span class="arr">&rarr;</span></button></div>
+          </div>
+
+          <!-- Step 2: name + suburb (compulsory) -->
+          <div class="bstep" data-step="2">
+            <div class="k">Step 2 of 4 &middot; Required</div>
+            <h4>Tell us who you are</h4>
+            <p class="hint">So we know who we are chatting with and roughly where you are.</p>
+            <div class="field" id="fName">
+              <label for="inName">Your first name</label>
+              <input type="text" id="inName" name="name" placeholder="e.g. Priya" autocomplete="given-name" />
+              <span class="err">Just need your name to continue.</span>
+            </div>
+            <div class="field" id="fSuburb">
+              <label for="inSuburb">Your suburb</label>
+              <input type="text" id="inSuburb" name="suburb" placeholder="e.g. Mawson Lakes" autocomplete="address-level2" />
+              <span class="err">Just need your suburb to continue.</span>
+            </div>
+            <div class="bnav"><button type="button" class="btn line" data-action="prev">&larr; Back</button><button type="button" class="btn" data-action="next">Next <span class="arr">&rarr;</span></button></div>
+          </div>
+
+          <!-- Step 3: optional enrich -->
+          <div class="bstep" data-step="3">
+            <div class="k">Step 3 of 4 &middot; Optional</div>
+            <h4>A little more detail</h4>
+            <p class="hint">Optional, but it helps us tailor your first lesson. Skip anything you like.</p>
+            <div class="field">
+              <span class="field-label">Your driving experience</span>
+              <div class="opt-grid compact" id="expOpts">
+                {
+                  funnel.experienceOptions.map((o) => (
+                    <label class="opt"><input type="radio" name="experience" value={o} /><span>{o}</span></label>
+                  ))
+                }
+              </div>
+            </div>
+            <div class="field">
+              <label for="inCountry">If converting, which country is your licence from?</label>
+              <input type="text" id="inCountry" name="country" placeholder="e.g. India, Sri Lanka, Nepal, Vietnam" />
+            </div>
+            <div class="field">
+              <span class="field-label">Preferred times</span>
+              <div class="opt-grid compact two" id="timeOpts">
+                {
+                  funnel.timeOptions.map((o) => (
+                    <label class="opt"><input type="checkbox" name="times" value={o} /><span>{o}</span></label>
+                  ))
+                }
+              </div>
+            </div>
+            <div class="field">
+              <label for="inNotes">Anything else we should know?</label>
+              <textarea id="inNotes" name="notes" rows="2" placeholder="Test already booked? Nervous driver? Tell us anything."></textarea>
+            </div>
+            <div class="bnav"><button type="button" class="btn line" data-action="prev">&larr; Back</button><button type="button" class="btn" data-action="next">Review <span class="arr">&rarr;</span></button></div>
+          </div>
+
+          <!-- Step 4: review + send -->
+          <div class="bstep" data-step="4">
+            <div class="k">Step 4 of 4 &middot; Send</div>
+            <h4>Ready when you are</h4>
+            <p class="hint">This message will open in WhatsApp. You can still edit it there before sending.</p>
+            <div class="summary-box" id="summaryBox"></div>
+            <div class="bnav">
+              <button type="button" class="btn line" data-action="prev">&larr; Back</button>
+              <a class="btn wa" id="sendBtn" href="#" target="_blank" rel="noopener">
+                <WaIcon />
+                Send on WhatsApp
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #book {
+    background: var(--dark);
+    color: var(--cream-on-dark);
+    padding: 148px 0 168px;
+    position: relative;
+    overflow: hidden;
+  }
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    pointer-events: none;
+  }
+  .glow.g1 {
+    width: 50vw;
+    height: 50vw;
+    max-width: 700px;
+    max-height: 700px;
+    background: radial-gradient(circle, rgba(138, 36, 24, 0.45), transparent 65%);
+    bottom: -16%;
+    left: -12%;
+    opacity: 0.7;
+  }
+  .glow.g2 {
+    width: 34vw;
+    height: 34vw;
+    max-width: 480px;
+    max-height: 480px;
+    background: radial-gradient(circle, rgba(242, 206, 22, 0.14), transparent 65%);
+    top: -8%;
+    right: -6%;
+  }
+  .book-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(46px, 6vw, 100px);
+    align-items: start;
+  }
+  .book-pitch h2 {
+    color: var(--cream-on-dark);
+    font-size: clamp(2.3rem, 4.8vw, 4rem);
+    letter-spacing: -0.02em;
+  }
+  .book-pitch h2 .it {
+    color: var(--gold-soft);
+  }
+  .book-pitch p {
+    color: var(--soft-on-dark);
+    margin-top: 22px;
+    max-width: 38ch;
+    font-size: 0.98rem;
+  }
+  .book-pitch .alt {
+    margin-top: 38px;
+    padding-top: 30px;
+    border-top: 1px solid var(--hair-light);
+    font-size: 0.9rem;
+    color: var(--soft-on-dark);
+  }
+  .book-pitch .alt a {
+    color: var(--gold-soft);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .book-pitch .alt a:hover {
+    text-decoration: underline;
+  }
+  .book-shell {
+    background: var(--cream-2);
+    color: var(--ink);
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 60px 130px -40px rgba(0, 0, 0, 0.75), 0 0 80px -20px rgba(138, 36, 24, 0.4);
+  }
+  .progress {
+    height: 48px;
+    background: var(--dark-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .road-line {
+    position: absolute;
+    top: 50%;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgba(246, 239, 224, 0.45) 0 14px, transparent 14px 26px);
+  }
+  .pcar {
+    position: absolute;
+    top: 50%;
+    left: 24px;
+    transform: translate(-50%, -50%);
+    transition: left 0.65s var(--ease);
+    z-index: 2;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+  }
+  .pcar svg {
+    width: 46px;
+    height: 24px;
+  }
+  .flagend {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--gold);
+    filter: drop-shadow(0 0 8px rgba(242, 206, 22, 0.6));
+  }
+  .book-body {
+    padding: 38px;
+  }
+  .bstep {
+    display: none;
+    animation: book-fade 0.45s var(--ease);
+  }
+  .bstep.active {
+    display: block;
+  }
+  @keyframes book-fade {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  .bstep .k {
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--maroon);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .bstep h4 {
+    font-family: var(--font-d);
+    font-size: 1.55rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .bstep .hint {
+    font-size: 0.84rem;
+    color: var(--text-2);
+    margin-bottom: 26px;
+  }
+  .opt-grid {
+    display: grid;
+    gap: 11px;
+  }
+  .opt-grid.two {
+    grid-template-columns: 1fr 1fr;
+  }
+  .opt {
+    border: 1.5px solid var(--hair);
+    border-radius: 16px;
+    padding: 16px 19px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 500;
+    font-size: 0.94rem;
+    background: #fff;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.3s, scale 0.2s var(--ease);
+    scale: 1;
+    box-shadow: var(--sh-sm);
+  }
+  .opt-grid.compact .opt {
+    padding: 13px 16px;
+    font-size: 0.9rem;
+  }
+  .opt:hover {
+    border-color: var(--maroon);
+    box-shadow: var(--sh-md);
+  }
+  .opt:active {
+    scale: 0.98;
+  }
+  .opt input {
+    accent-color: var(--maroon);
+    width: 17px;
+    height: 17px;
+    flex: none;
+  }
+  .opt.selected {
+    border-color: var(--maroon);
+    background: rgba(138, 36, 24, 0.06);
+    box-shadow: inset 0 0 0 1.5px var(--maroon), var(--sh-sm);
+  }
+  .opt small {
+    display: block;
+    font-weight: 400;
+    color: var(--text-2);
+    font-size: 0.78rem;
+    margin-top: 2px;
+  }
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label,
+  .field .field-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 14px 17px;
+    border: 1.5px solid var(--hair);
+    border-radius: 13px;
+    background: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #9a877c;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--maroon);
+    box-shadow: 0 0 0 4px rgba(138, 36, 24, 0.14);
+  }
+  .field .err {
+    display: none;
+    color: var(--plate-red);
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .field.invalid input {
+    border-color: var(--plate-red);
+    box-shadow: 0 0 0 4px rgba(216, 32, 28, 0.12);
+  }
+  .field.invalid .err {
+    display: block;
+  }
+  .step-err {
+    display: none;
+    color: var(--plate-red);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 14px;
+  }
+  .step-err.show {
+    display: block;
+  }
+  .bnav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  .summary-box {
+    background: var(--cream);
+    border: 1.5px dashed rgba(138, 36, 24, 0.55);
+    border-radius: 15px;
+    padding: 20px 22px;
+    font-size: 0.89rem;
+    white-space: pre-wrap;
+    line-height: 1.7;
+  }
+  .shake {
+    animation: book-shake 0.4s;
+  }
+  @keyframes book-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-7px); }
+    75% { transform: translateX(7px); }
+  }
+  @media (max-width: 920px) {
+    .book-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 680px) {
+    #book {
+      padding: 98px 0;
+    }
+    .book-body {
+      padding: 26px 18px;
+    }
+    .opt-grid.two {
+      grid-template-columns: 1fr;
+    }
+    .bnav .btn {
+      padding: 14px 20px;
+    }
+  }
+</style>
+
+<script>
+  import { phone } from '../data/content';
+
+  const TOTAL = 4;
+  let step = 1;
+
+  const form = document.getElementById('bookForm');
+  if (form) {
+    const steps = Array.from(form.querySelectorAll<HTMLElement>('.bstep'));
+    const pcar = document.getElementById('pcar');
+    const serviceOpts = document.getElementById('serviceOpts');
+    const expOpts = document.getElementById('expOpts');
+    const timeOpts = document.getElementById('timeOpts');
+    const errService = document.getElementById('errService');
+
+    const val = (id: string) =>
+      (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() ?? '';
+
+    function render() {
+      steps.forEach((s) => s.classList.toggle('active', Number(s.dataset.step) === step));
+      if (pcar) {
+        const pct = (step - 1) / (TOTAL - 1);
+        pcar.style.left = `calc(24px + ${pct * 100}% - ${pct * 96}px)`;
+      }
+      if (step === TOTAL) buildSummary();
+    }
+
+    function validate(): boolean {
+      if (step === 1) {
+        const picked = !!form.querySelector('input[name="service"]:checked');
+        errService?.classList.toggle('show', !picked);
+        if (!picked && serviceOpts) {
+          serviceOpts.classList.remove('shake');
+          void serviceOpts.offsetWidth; // reflow to restart the animation
+          serviceOpts.classList.add('shake');
+        }
+        return picked;
+      }
+      if (step === 2) {
+        const name = document.getElementById('inName') as HTMLInputElement;
+        const suburb = document.getElementById('inSuburb') as HTMLInputElement;
+        const nameOk = !!name.value.trim();
+        const subOk = !!suburb.value.trim();
+        document.getElementById('fName')?.classList.toggle('invalid', !nameOk);
+        document.getElementById('fSuburb')?.classList.toggle('invalid', !subOk);
+        return nameOk && subOk;
+      }
+      return true;
+    }
+
+    function next() {
+      if (!validate()) return;
+      if (step < TOTAL) {
+        step++;
+        render();
+      }
+    }
+    function prev() {
+      if (step > 1) {
+        step--;
+        render();
+      }
+    }
+
+    function buildSummary() {
+      const service =
+        (form.querySelector('input[name="service"]:checked') as HTMLInputElement | null)?.value ??
+        'Not sure yet';
+      const experience =
+        (form.querySelector('input[name="experience"]:checked') as HTMLInputElement | null)?.value ??
+        '';
+      const times = Array.from(
+        form.querySelectorAll<HTMLInputElement>('input[name="times"]:checked')
+      ).map((c) => c.value);
+
+      const msg =
+        "Hi Rams Driving Academy, I'd like to book a lesson.\n" +
+        `Service: ${service}\n` +
+        `Name: ${val('inName')}\n` +
+        `Suburb: ${val('inSuburb')}\n` +
+        `Experience: ${experience || 'not specified'}\n` +
+        `Licence country: ${val('inCountry') || 'n/a'}\n` +
+        `Preferred times: ${times.length ? times.join(', ') : 'flexible'}\n` +
+        `Notes: ${val('inNotes') || 'none'}`;
+
+      const box = document.getElementById('summaryBox');
+      if (box) box.textContent = msg;
+      const send = document.getElementById('sendBtn') as HTMLAnchorElement | null;
+      if (send) send.href = `https://wa.me/${phone.wa}?text=${encodeURIComponent(msg)}`;
+    }
+
+    /* nav buttons */
+    form.querySelectorAll<HTMLButtonElement>('[data-action]').forEach((b) => {
+      b.addEventListener('click', () => {
+        if (b.dataset.action === 'next') next();
+        else if (b.dataset.action === 'prev') prev();
+      });
+    });
+
+    /* selected-state styling for the radio/checkbox cards */
+    function syncSelected(container: HTMLElement | null, exclusive: boolean) {
+      if (!container) return;
+      container.querySelectorAll<HTMLLabelElement>('.opt').forEach((opt) => {
+        const input = opt.querySelector('input') as HTMLInputElement;
+        input.addEventListener('change', () => {
+          if (exclusive) {
+            container.querySelectorAll('.opt').forEach((o) => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            errService?.classList.remove('show');
+          } else {
+            opt.classList.toggle('selected', input.checked);
+          }
+        });
+      });
+    }
+    syncSelected(serviceOpts, true);
+    syncSelected(expOpts, true);
+    syncSelected(timeOpts, false);
+
+    /* clear field error as the user types */
+    ['inName', 'inSuburb'].forEach((id) => {
+      document.getElementById(id)?.addEventListener('input', () => {
+        document.getElementById(id === 'inName' ? 'fName' : 'fSuburb')?.classList.remove('invalid');
+      });
+    });
+
+    render();
+  }
+</script>

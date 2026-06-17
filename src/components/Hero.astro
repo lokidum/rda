@@ -1,0 +1,363 @@
+---
+import { hero, ticker, waLink, waMessages } from '../data/content';
+import Placeholder from './Placeholder.astro';
+import WaIcon from './WaIcon.astro';
+
+const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
+---
+
+<section id="hero">
+  <Placeholder
+    slot="hero"
+    label="Hero image goes here"
+    class="hero-media parallax"
+    dark={true}
+    bare={true}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="glow g1" aria-hidden="true"></div>
+  <div class="glow g2" aria-hidden="true"></div>
+
+  <div class="hero-deco" aria-hidden="true">
+    <svg id="heroWheel" class="wheel" viewBox="0 0 200 200" fill="none">
+      <circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="5" />
+      <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="2" opacity="0.5" />
+      <circle cx="100" cy="100" r="20" fill="currentColor" />
+      <path d="M100 120v68M30 70l52 22M170 70l-52 22" stroke="currentColor" stroke-width="9" stroke-linecap="round" />
+    </svg>
+    <span class="float-plate l">L</span>
+    <span class="float-plate p">P</span>
+  </div>
+
+  <div class="wrap hero-content">
+    <p class="hero-eyebrow">{hero.eyebrow}</p>
+    <h1 aria-label={fullHeadline}>
+      {hero.headline.map((w) => (
+        <span class="word"><span>{w}</span></span>
+      ))}<br />
+      <span class="word"><span class="it">{hero.accent}</span></span>
+    </h1>
+    <p class="lede">{hero.lede}</p>
+    <div class="hero-ctas">
+      <a class="btn wa" href={waLink(waMessages.book)} target="_blank" rel="noopener">
+        <WaIcon />
+        Book on WhatsApp
+      </a>
+      <a class="btn light" href="#services">View lessons <span class="arr">&rarr;</span></a>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <div class="wrap hero-stats">
+      {hero.stats.map((s) => (
+        <div class="hs"><b>{s.value}</b><span>{s.label}</span></div>
+      ))}
+      <div class="scroll-cue"><span class="line"></span> Scroll</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack">
+    {ticker.map((t) => <span>{t} <i class="sep"></i></span>)}
+  </div>
+</div>
+
+<style>
+  #hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: var(--cream-on-dark);
+    overflow: hidden;
+    background: var(--dark);
+  }
+  #hero :global(.hero-media) {
+    position: absolute;
+    inset: 0;
+  }
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background:
+      linear-gradient(180deg, rgba(20, 11, 6, 0.52), rgba(20, 11, 6, 0.12) 32%, rgba(20, 11, 6, 0.22) 58%, rgba(20, 11, 6, 0.86)),
+      radial-gradient(130% 95% at 16% 90%, rgba(92, 21, 11, 0.6), transparent 56%);
+  }
+  .glow {
+    position: absolute;
+    z-index: 3;
+    width: 60vw;
+    height: 60vw;
+    max-width: 760px;
+    max-height: 760px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .glow.g1 {
+    background: radial-gradient(circle, rgba(242, 206, 22, 0.22), transparent 65%);
+    bottom: -22%;
+    right: -14%;
+  }
+  .glow.g2 {
+    background: radial-gradient(circle, rgba(165, 51, 33, 0.4), transparent 65%);
+    top: -18%;
+    left: -12%;
+  }
+
+  /* steering wheel + floating plates (DESIGN.md 9.1) */
+  .hero-deco {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .wheel {
+    position: absolute;
+    top: 8%;
+    right: -6%;
+    width: clamp(220px, 30vw, 420px);
+    height: auto;
+    color: var(--gold-soft);
+    opacity: 0.16;
+    will-change: transform;
+  }
+  .float-plate {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-b);
+    font-weight: 800;
+    font-size: 1.5rem;
+    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.45);
+    animation: hero-bob 5.5s ease-in-out infinite;
+  }
+  .float-plate.l {
+    top: 20%;
+    right: 12%;
+    background: var(--gold);
+    color: #221708;
+    transform: rotate(-8deg);
+  }
+  .float-plate.p {
+    top: 33%;
+    right: 26%;
+    background: #fff;
+    color: var(--plate-red);
+    transform: rotate(7deg);
+    animation-delay: 2.2s;
+  }
+  @keyframes hero-bob {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -12px; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 4;
+    padding: 0 0 54px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(246, 239, 224, 0.95);
+    margin-bottom: 26px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 36px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--gold);
+    box-shadow: var(--glow-gold);
+  }
+  #hero h1 {
+    color: var(--cream-on-dark);
+    font-weight: 600;
+    font-size: var(--fs-display-xl);
+    letter-spacing: -0.025em;
+    line-height: 0.98;
+    max-width: 11ch;
+    text-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
+  }
+  #hero h1 .it {
+    color: var(--gold-soft);
+  }
+  #hero h1 .word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  #hero h1 .word > span {
+    display: inline-block;
+    transform: translateY(112%);
+  }
+  .lede {
+    max-width: 46ch;
+    font-size: 1.07rem;
+    color: rgba(246, 239, 224, 0.94);
+    margin: 26px 0 36px;
+    font-weight: 400;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .hero-foot {
+    position: relative;
+    z-index: 4;
+    border-top: 1px solid rgba(246, 239, 224, 0.24);
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+  }
+  .hero-stats .hs b {
+    font-family: var(--font-d);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: block;
+    line-height: 1.1;
+    color: #fff;
+  }
+  .hero-stats .hs span {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(246, 239, 224, 0.78);
+    font-weight: 600;
+  }
+  .scroll-cue {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(246, 239, 224, 0.8);
+    font-weight: 600;
+  }
+  .scroll-cue .line {
+    width: 1px;
+    height: 34px;
+    background: rgba(246, 239, 224, 0.45);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-cue .line::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: var(--gold);
+    animation: scroll-drop 2.2s var(--ease) infinite;
+  }
+  @keyframes scroll-drop {
+    0% { top: -50%; }
+    70%, 100% { top: 110%; }
+  }
+
+  /* ticker */
+  .ticker {
+    background: var(--maroon);
+    color: var(--cream-on-dark);
+    overflow: hidden;
+    padding: 16px 0;
+    position: relative;
+    z-index: 4;
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-run 32s linear infinite;
+  }
+  .ticker span {
+    display: inline-flex;
+    align-items: center;
+    gap: 26px;
+    padding-right: 26px;
+    font-family: var(--font-d);
+    font-style: italic;
+    font-size: 1.02rem;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .ticker .sep {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex: none;
+    box-shadow: 0 0 10px rgba(242, 206, 22, 0.7);
+  }
+  @keyframes ticker-run {
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 920px) {
+    .hero-stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .scroll-cue {
+      display: none;
+    }
+  }
+  @media (max-width: 680px) {
+    .hero-deco {
+      display: none;
+    }
+    .hero-stats {
+      padding: 16px 0;
+      gap: 10px;
+    }
+    .hero-stats .hs b {
+      font-size: 1.1rem;
+    }
+    .hero-stats .hs span {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+    }
+  }
+  @media (max-width: 400px) {
+    #hero h1 {
+      font-size: 2.3rem;
+    }
+    .hero-ctas .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #hero h1 .word > span {
+      transform: none;
+    }
+    .ticker-track {
+      animation: none;
+    }
+  }
+</style>

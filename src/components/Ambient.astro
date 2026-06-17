@@ -1,0 +1,158 @@
+---
+// WebGL ambient layer: a single fullscreen quad fragment shader rendering
+// slow-drifting maroon and gold glow plus a whisper of grain, in the locked
+// palette. Sits behind all content (z-index 0, pointer-events none) so it can
+// never sit over text. Falls back gracefully (removes itself) when WebGL is
+// unavailable or the user prefers reduced motion, leaving the CSS body colour
+// and the per-section radial glows to carry the ambience.
+---
+
+<canvas id="ambient" aria-hidden="true"></canvas>
+
+<style is:global>
+  #ambient {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    /* behind all content: warms transparent light sections, dark sections cover it */
+    z-index: -1;
+    pointer-events: none;
+    display: block;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ambient {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('ambient') as HTMLCanvasElement | null;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function remove() {
+    canvas?.remove();
+  }
+
+  if (!canvas || reduce) {
+    remove();
+  } else {
+    const gl = canvas.getContext('webgl', {
+      alpha: true,
+      premultipliedAlpha: false,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      powerPreference: 'low-power',
+    });
+
+    if (!gl) {
+      remove();
+    } else {
+      const vert = `
+        attribute vec2 p;
+        void main() { gl_Position = vec4(p, 0.0, 1.0); }
+      `;
+      // Drifting maroon + gold pools + faint grain. Low alpha keeps text crisp.
+      const frag = `
+        precision mediump float;
+        uniform vec2 u_res;
+        uniform float u_time;
+        float pool(vec2 uv, vec2 c, float r) {
+          return smoothstep(r, 0.0, distance(uv, c));
+        }
+        void main() {
+          vec2 uv = gl_FragCoord.xy / u_res;
+          float asp = u_res.x / u_res.y;
+          uv.x *= asp;
+          float t = u_time * 0.045;
+          vec2 c1 = vec2(0.18 * asp + 0.16 * sin(t), 0.26 + 0.12 * cos(t * 0.8));
+          vec2 c2 = vec2(0.86 * asp + 0.13 * cos(t * 0.7), 0.78 + 0.12 * sin(t * 0.9));
+          vec2 c3 = vec2(0.55 * asp + 0.18 * sin(t * 0.55), 0.5 + 0.2 * cos(t * 0.5));
+          float m = pool(uv, c1, 0.72 * asp);
+          float g = pool(uv, c2, 0.6 * asp);
+          float m2 = pool(uv, c3, 0.5 * asp);
+          vec3 maroon = vec3(0.541, 0.141, 0.094);
+          vec3 gold = vec3(0.949, 0.808, 0.086);
+          vec3 col = maroon * (m * 0.5 + m2 * 0.28) + gold * (g * 0.2);
+          float a = m * 0.42 + g * 0.18 + m2 * 0.22;
+          float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453 + u_time);
+          col += (n - 0.5) * 0.015;
+          gl_FragColor = vec4(col, a * 0.5);
+        }
+      `;
+
+      function compile(type: number, src: string) {
+        const s = gl!.createShader(type)!;
+        gl!.shaderSource(s, src);
+        gl!.compileShader(s);
+        return s;
+      }
+      const prog = gl.createProgram()!;
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vert));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, frag));
+      gl.linkProgram(prog);
+
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        remove();
+      } else {
+        gl.useProgram(prog);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          new Float32Array([-1, -1, 3, -1, -1, 3]),
+          gl.STATIC_DRAW
+        );
+        const loc = gl.getAttribLocation(prog, 'p');
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+        const uRes = gl.getUniformLocation(prog, 'u_res');
+        const uTime = gl.getUniformLocation(prog, 'u_time');
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        function resize() {
+          const w = Math.floor(window.innerWidth * dpr);
+          const h = Math.floor(window.innerHeight * dpr);
+          if (canvas!.width !== w || canvas!.height !== h) {
+            canvas!.width = w;
+            canvas!.height = h;
+            gl!.viewport(0, 0, w, h);
+          }
+        }
+        resize();
+        addEventListener('resize', resize, { passive: true });
+
+        let raf = 0;
+        let last = 0;
+        let running = true;
+        const FRAME = 1000 / 30; // cap at ~30fps, this is ambience not action
+        function loop(now: number) {
+          if (!running) return;
+          raf = requestAnimationFrame(loop);
+          if (now - last < FRAME) return;
+          last = now;
+          gl!.uniform2f(uRes, canvas!.width, canvas!.height);
+          gl!.uniform1f(uTime, now * 0.001);
+          gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+        }
+        raf = requestAnimationFrame(loop);
+
+        // pause when the tab is hidden
+        document.addEventListener('visibilitychange', () => {
+          running = !document.hidden;
+          if (running) {
+            last = 0;
+            raf = requestAnimationFrame(loop);
+          } else {
+            cancelAnimationFrame(raf);
+          }
+        });
+      }
+    }
+  }
+</script>

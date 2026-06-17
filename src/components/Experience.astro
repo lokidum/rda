@@ -1,0 +1,165 @@
+---
+import { experience, images } from '../data/content';
+import { hasImage } from '../lib/images';
+
+const lessonSlots = ['lesson1', 'lesson2', 'lesson3'] as const;
+---
+
+<section id="experience">
+  <div class="wrap">
+    <div class="label">The Rams experience</div>
+    <div class="exp-grid">
+      <div class="exp-visual">
+        <div class="ph frame" id="expPh">
+          <div class="ph-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+              <circle cx="12" cy="13.5" r="3.5" />
+            </svg>
+            <b>Lesson photo set</b>
+            <span>images/lesson-1.jpg &middot; lesson-2.jpg &middot; lesson-3.jpg &middot; 1600 x 1840 &middot; first lesson, in-car detail, the happy pass moment</span>
+          </div>
+          {
+            lessonSlots.map((slot, i) =>
+              hasImage(images[slot].file) ? (
+                <img
+                  class:list={['layer', { active: i === 0 }]}
+                  src={`/images/${images[slot].file}`}
+                  alt={images[slot].alt}
+                  width={images[slot].w}
+                  height={images[slot].h}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : null
+            )
+          }
+          <span class="badge" id="expBadge" set:html={experience[0].badge}></span>
+        </div>
+      </div>
+      <div class="exp-steps" id="expSteps">
+        {
+          experience.map((step, i) => (
+            <article
+              class:list={['exp-step', { active: i === 0 }]}
+              data-i={i}
+              data-img={step.image}
+              data-badge={step.badge}
+            >
+              <div class="k">{step.k}</div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #experience {
+    padding: 148px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 100px);
+    align-items: start;
+  }
+  .exp-visual {
+    position: sticky;
+    top: 104px;
+  }
+  .exp-visual .ph {
+    aspect-ratio: 4 / 4.5;
+    border-radius: 26px;
+    box-shadow: var(--sh-lg);
+  }
+  .exp-visual .layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.65s ease;
+    z-index: 3;
+  }
+  .exp-visual .layer.active {
+    opacity: 1;
+  }
+  .exp-visual .badge {
+    position: absolute;
+    z-index: 5;
+    bottom: 22px;
+    left: 22px;
+    background: rgba(27, 17, 11, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--cream-on-dark);
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 1px solid rgba(246, 239, 224, 0.25);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  }
+  .exp-steps {
+    display: grid;
+  }
+  .exp-step {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--hair);
+    opacity: 0.32;
+    transition: opacity 0.5s ease, transform 0.5s var(--ease);
+  }
+  .exp-step.active {
+    opacity: 1;
+  }
+  .exp-step:first-child {
+    padding-top: 8px;
+  }
+  .exp-step .k {
+    font-family: var(--font-d);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--maroon);
+    margin-bottom: 14px;
+  }
+  .exp-step h3 {
+    font-size: clamp(1.55rem, 2.6vw, 2.2rem);
+    margin-bottom: 14px;
+  }
+  .exp-step p {
+    color: var(--text-2);
+    font-size: 0.96rem;
+    max-width: 42ch;
+  }
+  @media (max-width: 920px) {
+    .exp-grid {
+      grid-template-columns: 1fr;
+    }
+    .exp-visual {
+      position: relative;
+      top: 0;
+    }
+    .exp-visual .ph {
+      aspect-ratio: 4 / 3.4;
+      max-height: 64vh;
+    }
+  }
+  @media (max-width: 680px) {
+    #experience {
+      padding: 88px 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exp-step {
+      opacity: 1;
+    }
+  }
+</style>

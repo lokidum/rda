@@ -1,0 +1,115 @@
+---
+import { finalCta, phone, tel, waLink, waMessages } from '../data/content';
+import WaIcon from './WaIcon.astro';
+---
+
+<section id="final">
+  <div class="wrap">
+    <div class="plates reveal" aria-hidden="true">
+      <span class="plate l">L</span>
+      <span class="plate p">P</span>
+    </div>
+    <h2 class="reveal">Ready when <span class="it">you</span> are.</h2>
+    <p class="reveal">{finalCta.body}</p>
+    <div class="ctas reveal">
+      <a class="btn wa" href={waLink(waMessages.book)} target="_blank" rel="noopener">
+        <WaIcon />
+        Book on WhatsApp
+      </a>
+      <a class="btn line" href={tel}>Call {phone.display}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  #final {
+    padding: 168px 0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  #final::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 74vw;
+    height: 60vw;
+    max-width: 980px;
+    max-height: 700px;
+    background: radial-gradient(ellipse, rgba(138, 36, 24, 0.1), transparent 62%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  #final h2 {
+    font-size: clamp(2.8rem, 9vw, 7.5rem);
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    position: relative;
+    z-index: 2;
+  }
+  #final p {
+    margin: 30px auto 42px;
+    max-width: 44ch;
+    color: var(--text-2);
+    position: relative;
+    z-index: 2;
+  }
+  .plates {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 42px;
+    position: relative;
+    z-index: 2;
+  }
+  .plate {
+    width: 74px;
+    height: 74px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 2rem;
+    font-family: var(--font-b);
+    animation: final-bob 5.5s ease-in-out infinite;
+  }
+  .plate.l {
+    background: var(--gold);
+    color: #221708;
+    transform: rotate(-7deg);
+    box-shadow: 0 18px 40px -12px rgba(33, 19, 9, 0.35), var(--glow-gold);
+  }
+  .plate.p {
+    background: #fff;
+    color: var(--plate-red);
+    transform: rotate(6deg);
+    border: 1px solid var(--hair);
+    box-shadow: 0 18px 40px -12px rgba(33, 19, 9, 0.3);
+    animation-delay: 2.4s;
+  }
+  @keyframes final-bob {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -10px; }
+  }
+  .ctas {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+  @media (max-width: 680px) {
+    #final {
+      padding: 116px 0 130px;
+    }
+    .plate {
+      width: 62px;
+      height: 62px;
+      font-size: 1.65rem;
+    }
+  }
+</style>

@@ -1,0 +1,306 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+import {
+  brand,
+  phone,
+  waLink,
+  waMessages,
+  tel,
+  faq,
+  services,
+  footer as footerData,
+  nav,
+} from '../data/content';
+
+import Header from '../components/Header.astro';
+import Ambient from '../components/Ambient.astro';
+import RoadAnimation from '../components/RoadAnimation.astro';
+import BottomBar from '../components/BottomBar.astro';
+import WhatsAppWidget from '../components/WhatsAppWidget.astro';
+import WaIcon from '../components/WaIcon.astro';
+
+// TODO(loki): swap the placeholder domain for the real one (also in robots.txt,
+// llms.txt, sitemap.xml, and the geo.position if Dad has a base suburb).
+const SITE = Astro.site?.href ?? 'https://ramsdrivingacademy.com.au/';
+const canonical = new URL('/', SITE).href;
+
+const title = 'Rams Driving Academy | Driving Lessons Adelaide, 20+ Years';
+const description =
+  'Patient, expert driving lessons in Adelaide. Learner to P, overseas licence conversion and refresher lessons in automatic dual-control cars. Book on WhatsApp.';
+const ogImage = new URL('/images/hero.jpg', SITE).href;
+
+// Favicon and app icon live in public/ (real RDA logo). favicon.svg adapts to
+// dark mode (cream on dark tab bars); logo.png is the raster / apple-touch icon.
+const fontHref =
+  'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,600;1,9..144,900&family=Inter:wght@400;500;600;700&display=swap';
+
+/* ---------- JSON-LD: DrivingSchool / LocalBusiness ---------- */
+// Schema-friendly service names, mapped from the service ids in content.ts.
+const offerName: Record<string, string> = {
+  learner: 'Learner to P Licence Training',
+  conversion: 'International Licence Conversion Training',
+  refresher: 'Refresher Driving Lessons',
+  testday: 'Test Day Support and Car Hire',
+};
+const makesOffer = services.map((s) => {
+  const offer: Record<string, unknown> = {
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: offerName[s.id] ?? s.title },
+    priceCurrency: 'AUD',
+    description: s.blurb,
+  };
+  const numeric = s.price.replace(/[^0-9.]/g, '');
+  if (numeric) offer.price = numeric; // prices as strings, test day has none
+  return offer;
+});
+
+const drivingSchool = {
+  '@context': 'https://schema.org',
+  '@type': 'DrivingSchool',
+  name: brand.name,
+  description:
+    'Adelaide driving school with over 20 years of experience. Learner to P training, overseas licence conversion and refresher lessons in automatic dual-control cars. Welcoming to learners from all backgrounds, including South Asian and international arrivals.',
+  url: canonical,
+  telephone: phone.call,
+  priceRange: '$$',
+  currenciesAccepted: 'AUD',
+  paymentAccepted: 'Cash, Bank Transfer, PayID',
+  areaServed: {
+    '@type': 'City',
+    name: 'Adelaide',
+    containedInPlace: { '@type': 'State', name: 'South Australia' },
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Adelaide',
+    addressRegion: 'SA',
+    addressCountry: 'AU',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: -34.9285, longitude: 138.6007 },
+  // TODO(loki): confirm real opening hours if not 7am to 9pm.
+  openingHours: 'Mo-Su 07:00-21:00',
+  knowsLanguage: ['en', 'ta', 'hi'],
+  // TODO(loki): add Google Business Profile, Facebook, Instagram URLs to sameAs
+  // once they exist. Do not add aggregateRating until real reviews are live.
+  sameAs: [waLink(waMessages.book)],
+  makesOffer,
+};
+
+/* ---------- JSON-LD: FAQPage (mirrors the on-page accordion exactly) ---------- */
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+/* ---------- JSON-LD: BreadcrumbList (single page, light) ---------- */
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: canonical },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#1B110B" />
+
+    <!-- Geo signals (Adelaide CBD placeholder coordinates) -->
+    <meta name="geo.region" content="AU-SA" />
+    <meta name="geo.placename" content="Adelaide" />
+    <meta name="geo.position" content="-34.9285;138.6007" />
+    <meta name="ICBM" content="-34.9285, 138.6007" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content="Rams Driving Academy | Driving Lessons Adelaide" />
+    <meta property="og:description" content="Patient, expert driving lessons in Adelaide. Book on WhatsApp." />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_AU" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rams Driving Academy | Driving Lessons Adelaide" />
+    <meta name="twitter:description" content="Patient, expert driving lessons in Adelaide. Book on WhatsApp." />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- Fonts: preconnect + swap so no flash of invisible text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href={fontHref} />
+    <link rel="stylesheet" href={fontHref} />
+
+    <!-- No-JS fallback: never leave reveal-on-scroll content hidden -->
+    <noscript>
+      <style>
+        .reveal { opacity: 1 !important; transform: none !important; }
+        #hero h1 .word > span { transform: none !important; }
+        #manifesto .w { opacity: 1 !important; }
+        .exp-step { opacity: 1 !important; }
+      </style>
+    </noscript>
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(drivingSchool)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <Ambient />
+    <Header />
+    <RoadAnimation />
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <span class="brand-name">{brand.name}</span>
+            <p>{footerData.blurb}</p>
+          </div>
+          <div>
+            <h4>Explore</h4>
+            <ul>
+              {footerData.explore.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          </div>
+          <div>
+            <h4>Get in touch</h4>
+            <ul>
+              <li><a href={waLink(waMessages.book)} target="_blank" rel="noopener">WhatsApp: {phone.display}</a></li>
+              <li><a href={tel}>Call: {phone.display}</a></li>
+              <li>{brand.location}</li>
+              <li>{footerData.hours}</li>
+              <li>Languages: {footerData.languages}</li>
+            </ul>
+          </div>
+        </div>
+        <p class="foot-smallprint">{footerData.smallprint}</p>
+        <div class="foot-bottom">
+          <span>&copy; <span id="yr"></span> {brand.name}. All rights reserved.</span>
+          <span>Driving lessons &middot; Adelaide SA &middot; Est. 20+ years</span>
+        </div>
+      </div>
+    </footer>
+
+    <BottomBar />
+    <WhatsAppWidget />
+
+    <script>
+      // Auto-updating copyright year (kept out of build output so it never goes stale).
+      const yr = document.getElementById('yr');
+      if (yr) yr.textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>
+
+<style>
+  footer {
+    background: var(--dark);
+    color: rgba(246, 239, 224, 0.82);
+    padding: 88px 0 40px;
+    border-top: 2px solid var(--maroon);
+    position: relative;
+    z-index: 3;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+  .foot-grid h4 {
+    color: #fff;
+    font-family: var(--font-d);
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .foot-grid ul {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    font-size: 0.88rem;
+  }
+  .foot-grid a {
+    text-decoration: none;
+    opacity: 0.88;
+    transition: opacity 0.25s, color 0.25s;
+  }
+  .foot-grid a:hover {
+    opacity: 1;
+    color: var(--gold-soft);
+  }
+  .foot-brand .brand-name {
+    color: var(--gold-soft);
+    font-family: var(--font-d);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 1.7rem;
+  }
+  .foot-brand p {
+    font-size: 0.88rem;
+    margin-top: 18px;
+    max-width: 32rem;
+    color: var(--soft-on-dark);
+  }
+  .foot-smallprint {
+    font-size: 0.8rem;
+    color: var(--soft-on-dark);
+    margin-bottom: 26px;
+    max-width: 60ch;
+  }
+  .foot-bottom {
+    border-top: 1px solid var(--hair-light);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 0.76rem;
+    color: rgba(246, 239, 224, 0.6);
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 920px) {
+    .foot-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 680px) {
+    footer {
+      padding: 70px 0 110px;
+    }
+    .foot-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+  }
+</style>

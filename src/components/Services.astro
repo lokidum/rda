@@ -1,0 +1,62 @@
+---
+import { services } from '../data/content';
+import ServiceCard from './ServiceCard.astro';
+---
+
+<section id="services">
+  <div class="wrap">
+    <div class="label">Lessons and pricing</div>
+    <div class="svc-head">
+      <h2 class="reveal">Choose your <span class="it">road.</span></h2>
+      <p class="reveal">
+        Clear prices. No lock-in packages. Every enquiry opens a direct chat with
+        your instructor, not a call centre.
+      </p>
+    </div>
+    <div class="svc-grid">
+      {services.map((s) => <ServiceCard service={s} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  #services {
+    padding: 128px 0 150px;
+    border-top: 1px solid var(--hair);
+  }
+  .svc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+  }
+  .svc-head h2 {
+    font-size: var(--fs-display-l);
+    max-width: 14ch;
+  }
+  .svc-head p {
+    max-width: 36ch;
+    color: var(--text-2);
+    font-size: 0.98rem;
+  }
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 1080px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 680px) {
+    #services {
+      padding: 88px 0;
+    }
+    .svc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

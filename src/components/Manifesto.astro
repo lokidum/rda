@@ -1,0 +1,135 @@
+---
+import { manifesto, images } from '../data/content';
+import { hasImage } from '../lib/images';
+
+type Token =
+  | { type: 'word'; value: string }
+  | { type: 'pill'; slug: keyof typeof images };
+
+// Pre-render words as .w spans (GSAP lights them on scroll). Inline {pill:slug}
+// markers become little photo pills embedded mid sentence.
+const tokens: Token[] = [];
+for (const part of manifesto.text.split(/(\{pill:[^}]+\})/g)) {
+  const m = part.match(/^\{pill:([^}]+)\}$/);
+  if (m) {
+    tokens.push({ type: 'pill', slug: m[1] as keyof typeof images });
+  } else {
+    part
+      .split(/\s+/)
+      .filter(Boolean)
+      .forEach((value) => tokens.push({ type: 'word', value }));
+  }
+}
+---
+
+<section id="manifesto">
+  <div class="wrap narrow">
+    <div class="label">{manifesto.label}</div>
+    <p class="statement" id="statement">
+      {
+        tokens.map((t) =>
+          t.type === 'pill' ? (
+            <span class="inline-ph">
+              {hasImage(images[t.slug].file) && (
+                <img
+                  src={`/images/${images[t.slug].file}`}
+                  alt=""
+                  width={images[t.slug].w}
+                  height={images[t.slug].h}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </span>
+          ) : (
+            <span class="w">{t.value} </span>
+          )
+        )
+      }
+    </p>
+    <div class="sig reveal">
+      <!-- TODO(loki): confirm whether to sign as "Rams" or your dad's first name. -->
+      <span class="name">{manifesto.signName}</span>
+      <span class="role">{manifesto.signRole}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  #manifesto {
+    padding: 168px 0 146px;
+  }
+  .statement {
+    font-family: var(--font-d);
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    font-size: var(--fs-display-m);
+    line-height: 1.3;
+    max-width: 25ch;
+    color: var(--ink);
+  }
+  .statement .w {
+    opacity: 0.15;
+    transition: opacity 0.45s ease;
+  }
+  .statement .w.lit {
+    opacity: 1;
+  }
+  .inline-ph {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2.6em;
+    height: 1.1em;
+    border-radius: 999px;
+    margin: 0 0.12em;
+    position: relative;
+    top: -0.06em;
+    overflow: hidden;
+    background: linear-gradient(135deg, #d9cba9, #ede3cc);
+    border: 1px solid var(--hair);
+    box-shadow: var(--sh-sm);
+  }
+  .inline-ph::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(138, 36, 24, 0.12) 8px 9px);
+  }
+  .inline-ph img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sig {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .sig .name {
+    font-family: var(--font-d);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--maroon);
+  }
+  .sig .role {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    font-weight: 600;
+  }
+  @media (max-width: 680px) {
+    #manifesto {
+      padding: 106px 0 96px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .statement .w {
+      opacity: 1;
+    }
+  }
+</style>

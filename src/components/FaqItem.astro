@@ -1,0 +1,81 @@
+---
+interface Props {
+  q: string;
+  a: string;
+}
+const { q, a } = Astro.props;
+---
+
+<details>
+  <summary>{q}<span class="plus" aria-hidden="true">+</span></summary>
+  <div class="faq-body">{a}</div>
+</details>
+
+<style>
+  details {
+    background: var(--cream-2);
+    border: 1px solid var(--hair);
+    border-radius: 18px;
+    box-shadow: var(--sh-sm);
+    overflow: hidden;
+    transition: box-shadow 0.35s var(--ease), border-color 0.3s;
+  }
+  details:hover {
+    border-color: rgba(138, 36, 24, 0.3);
+    box-shadow: var(--sh-md);
+  }
+  details[open] {
+    box-shadow: var(--sh-md);
+    border-color: rgba(138, 36, 24, 0.35);
+  }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: var(--font-d);
+    letter-spacing: -0.005em;
+    transition: color 0.3s;
+  }
+  summary:hover {
+    color: var(--maroon);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .plus {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--hair-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-family: var(--font-b);
+    transition: transform 0.35s var(--ease), background 0.35s, color 0.35s, border-color 0.35s;
+  }
+  details[open] .plus {
+    transform: rotate(45deg);
+    background: var(--maroon);
+    color: var(--cream-2);
+    border-color: var(--maroon);
+    box-shadow: var(--glow-maroon);
+  }
+  .faq-body {
+    padding: 0 50px 24px 24px;
+    font-size: 0.93rem;
+    color: var(--text-2);
+  }
+  @media (max-width: 680px) {
+    .faq-body {
+      padding: 0 24px 22px;
+    }
+  }
+</style>

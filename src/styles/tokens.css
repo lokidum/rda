@@ -1,0 +1,77 @@
+/* ============================================================
+   Design tokens (locked). Every value lifted from DESIGN.md /
+   the production V3 build, already tuned for WCAG AA contrast.
+   Do not add new hues.
+   ============================================================ */
+:root {
+  /* Cream family (backgrounds and surfaces) */
+  --cream: #f4eddf; /* page background */
+  --cream-2: #fcf8ee; /* raised surfaces, cards */
+  --cream-3: #e8dec8; /* tints, hairline fills */
+
+  /* Ink and text */
+  --ink: #211309; /* primary text on cream (~15.5:1) */
+  --text-2: #5a4338; /* secondary text on cream (~7.9:1) */
+
+  /* Maroon (brand primary) */
+  --maroon: #8a2418; /* brand primary, buttons, links (~7.7:1 on cream) */
+  --maroon-bright: #a53321; /* hovers, accents */
+  --maroon-deep: #5c150b; /* deep shade, gradients */
+
+  /* Dark sections (warm near-black) */
+  --dark: #1b110b;
+  --dark-2: #271a11;
+  --cream-on-dark: #f6efe0; /* text on dark (~14:1) */
+  --soft-on-dark: rgba(246, 239, 224, 0.8);
+
+  /* Gold and plate accents */
+  --gold: #f2ce16; /* number-plate yellow (~12:1 on dark) */
+  --gold-soft: #f6cf3d;
+  --plate-red: #d8201c; /* L-plate / P-plate red */
+
+  /* WhatsApp (the only greens permitted) */
+  --wa: #0f8443; /* darkened for AA with white text (~4.8:1) */
+  --wa-deep: #0b6e37;
+
+  /* Hairlines */
+  --hair: rgba(33, 19, 9, 0.15);
+  --hair-strong: rgba(33, 19, 9, 0.24);
+  --hair-light: rgba(246, 239, 224, 0.2);
+
+  /* Shadow + glow system */
+  --sh-sm: 0 1px 2px rgba(33, 19, 9, 0.07), 0 3px 10px -2px rgba(33, 19, 9, 0.07);
+  --sh-md: 0 4px 10px -4px rgba(92, 21, 11, 0.16), 0 14px 34px -14px rgba(92, 21, 11, 0.22);
+  --sh-lg: 0 10px 24px -10px rgba(92, 21, 11, 0.25), 0 34px 80px -30px rgba(92, 21, 11, 0.4);
+  --glow-maroon: 0 8px 34px -8px rgba(138, 36, 24, 0.55);
+  --glow-gold: 0 0 36px rgba(242, 206, 22, 0.3);
+  --glow-wa: 0 10px 32px -8px rgba(23, 166, 83, 0.55);
+
+  /* Type families */
+  --font-d: 'Fraunces', Georgia, serif;
+  --font-b: 'Inter', -apple-system, 'SF Pro Text', 'Segoe UI', sans-serif;
+
+  /* Fluid type scale (clamp based) */
+  --fs-display-xl: clamp(2.55rem, 8vw, 7rem);
+  --fs-display-l: clamp(2.2rem, 5vw, 4.2rem);
+  --fs-display-m: clamp(1.55rem, 3.4vw, 2.7rem);
+  --fs-heading: clamp(1.32rem, 2vw, 1.5rem);
+  --fs-small: 0.86rem;
+  --fs-label: 0.72rem;
+
+  /* Spacing scale (4px base) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+  --section-pad: clamp(80px, 12vh, 160px);
+  --gutter: clamp(20px, 5vw, 48px);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
