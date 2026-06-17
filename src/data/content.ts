@@ -73,8 +73,7 @@ export const manifesto = {
   label: 'The Rams philosophy',
   // Split into runs; {pill:slug} markers are replaced with the inline image.
   text: 'I have taught Adelaide drivers for more than twenty years. {pill:inline-city} Every learner is different, so every lesson is too. We go at your pace, in a calm car, with no judgement and no rush. {pill:inline-keys} Whether you are starting on your Ls, bringing an overseas licence across, or just getting your confidence back, you are in good hands.',
-  // TODO(loki): confirm whether to sign off as "Rams" or your dad's first name.
-  signName: 'Rams',
+  signName: 'Barani Kumar',
   signRole: 'Founder and principal instructor',
 } as const;
 
