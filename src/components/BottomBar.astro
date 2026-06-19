@@ -19,14 +19,14 @@ import WaIcon from './WaIcon.astro';
     right: 0;
     bottom: 0;
     z-index: 96;
-    background: rgba(252, 248, 238, 0.92);
+    background: rgba(255, 250, 240, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid var(--hair);
     padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
     grid-template-columns: 1fr 1.4fr;
     gap: 10px;
-    box-shadow: 0 -12px 40px -18px rgba(33, 19, 9, 0.3);
+    box-shadow: 0 -12px 40px -18px rgba(1, 22, 30, 0.3);
   }
   #mobilebar .btn {
     justify-content: center;
@@ -36,6 +36,35 @@ import WaIcon from './WaIcon.astro';
   @media (max-width: 680px) {
     #mobilebar {
       display: grid;
+      transform: translateY(0);
+      transition: transform 0.4s var(--ease);
+    }
+    /* hidden while the hero landing section is in view (JS toggles this) */
+    #mobilebar.at-hero {
+      transform: translateY(118%);
+    }
+  }
+  @media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+    #mobilebar {
+      transition: none;
     }
   }
 </style>
+
+<script>
+  // Keep the fixed call/WhatsApp bar tucked away over the hero, then slide it up
+  // once the visitor scrolls past the hero. Default (no JS) leaves it visible.
+  const bar = document.getElementById('mobilebar');
+  const hero = document.getElementById('hero');
+  if (bar && hero) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          bar.classList.toggle('at-hero', e.intersectionRatio > 0.15);
+        }
+      },
+      { threshold: [0, 0.15, 1] }
+    );
+    io.observe(hero);
+  }
+</script>

@@ -220,7 +220,7 @@ section {
 }
 .btn.line.on-dark {
   color: var(--cream-on-dark);
-  border-color: rgba(246, 239, 224, 0.45);
+  border-color: rgba(243, 238, 226, 0.45);
 }
 .btn.line.on-dark:hover {
   background: var(--cream-on-dark);
@@ -274,7 +274,7 @@ textarea:focus-visible {
   background: repeating-linear-gradient(
     135deg,
     transparent 0 22px,
-    rgba(138, 36, 24, 0.07) 22px 23px
+    rgba(90, 0, 5, 0.07) 22px 23px
   );
 }
 .ph .ph-label {
@@ -319,17 +319,17 @@ textarea:focus-visible {
   object-fit: cover;
 }
 .ph.dark {
-  background: linear-gradient(160deg, #2b1b11, #43271a 60%, #321d12);
+  background: linear-gradient(160deg, #061a22, #0d2630 60%, #08202a);
 }
 .ph.dark::before {
   background: repeating-linear-gradient(
     135deg,
     transparent 0 22px,
-    rgba(242, 206, 22, 0.05) 22px 23px
+    rgba(217, 131, 36, 0.05) 22px 23px
   );
 }
 .ph.dark .ph-label {
-  color: rgba(242, 206, 22, 0.8);
+  color: rgba(217, 131, 36, 0.8);
 }
 .frame {
   border-radius: 24px;

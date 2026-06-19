@@ -99,7 +99,8 @@
         onToggle: (self) => {
           if (!self.isActive) return;
           document.querySelectorAll('.exp-step').forEach((x) => x.classList.toggle('active', x === stp));
-          const img = Number(stp.dataset.img ?? 0);
+          // clamp to available layers so a single on-road photo stays visible across all steps
+          const img = Math.min(Number(stp.dataset.img ?? 0), Math.max(0, layers.length - 1));
           layers.forEach((l, li) => l.classList.toggle('active', li === img));
           if (badge && stp.dataset.badge) badge.innerHTML = stp.dataset.badge;
         },
@@ -174,13 +175,13 @@
 
       const carScale = W < 700 ? 0.72 : 1;
       gsap.killTweensOf('#car');
-      gsap.set('#car', { opacity: 1, scale: carScale, transformOrigin: '50% 50%' });
+      gsap.set('#car', { opacity: 0.88, scale: carScale * 0.92, transformOrigin: '50% 50%' });
       gsap.to('#car', {
         ease: 'none',
         motionPath: { path: '#roadpath', align: '#roadpath', alignOrigin: [0.5, 0.5], autoRotate: 90 },
         // Higher scrub = more lag/easing, so the car glides calmly instead of
         // snapping with the scroll. Tuned down from a twitchy 0.8.
-        scrollTrigger: { trigger: document.body, start: 'top top', end: 'max', scrub: 2.6, invalidateOnRefresh: true },
+        scrollTrigger: { trigger: document.body, start: 'top top', end: 'max', scrub: 3.8, invalidateOnRefresh: true },
       });
     }
     buildRoad();

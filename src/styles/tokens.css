@@ -4,48 +4,52 @@
    Do not add new hues.
    ============================================================ */
 :root {
-  /* Cream family (backgrounds and surfaces) */
-  --cream: #f4eddf; /* page background */
-  --cream-2: #fcf8ee; /* raised surfaces, cards */
-  --cream-3: #e8dec8; /* tints, hairline fills */
-  --paper: #fffdf8; /* warm near-white for inputs/fields (never pure #fff) */
+  /* Old Lace cream family (backgrounds and surfaces) */
+  --cream: #fdf4e7; /* page background (Old Lace) */
+  --cream-2: #fffaf0; /* raised surfaces, cards */
+  --cream-3: #f0e6d4; /* tints, hairline fills */
+  --paper: #fffefa; /* near-white for inputs/fields (never pure #fff) */
 
-  /* Ink and text */
-  --ink: #211309; /* primary text on cream (~15.5:1) */
-  --text-2: #5a4338; /* secondary text on cream (~7.9:1) */
+  /* Ink and text (Ink Black + Granite) */
+  --ink: #01161e; /* primary text on cream (~17:1) */
+  --text-2: #4f5e54; /* secondary text, dark granite (~6.3:1 on cream) */
 
-  /* Maroon (brand primary) */
-  --maroon: #8a2418; /* brand primary, buttons, links (~7.7:1 on cream) */
-  --maroon-bright: #a53321; /* hovers, accents */
-  --maroon-deep: #5c150b; /* deep shade, gradients */
+  /* Black Cherry (brand primary) */
+  --maroon: #5a0005; /* brand primary, buttons, links (matches the logo, ~15:1 on cream) */
+  --maroon-bright: #7a0a10; /* hovers, accents */
+  --maroon-deep: #3a0003; /* deep shade, gradients */
 
-  /* Dark sections (warm near-black) */
-  --dark: #1b110b;
-  --dark-2: #271a11;
-  --cream-on-dark: #f6efe0; /* text on dark (~14:1) */
-  --soft-on-dark: rgba(246, 239, 224, 0.8);
+  /* Dark sections (Ink Black) */
+  --dark: #01161e;
+  --dark-2: #0a232c;
+  --cream-on-dark: #f3eee2; /* text on dark (~15:1) */
+  --soft-on-dark: rgba(243, 238, 226, 0.78);
 
-  /* Gold and plate accents */
-  --gold: #f2ce16; /* number-plate yellow (~12:1 on dark) */
-  --gold-soft: #f6cf3d;
+  /* Amber Earth accent (the gold role) + plate */
+  --gold: #d98324; /* amber-earth: on dark / plates / accents only (fails as text on cream) */
+  --gold-soft: #e89a45;
   --plate-red: #d8201c; /* L-plate / P-plate red */
+
+  /* Granite (sage, calm secondary accent) */
+  --granite: #5b6c5d; /* ~5.1:1 on cream; large/decorative on dark */
+  --granite-soft: #7e8e80;
 
   /* WhatsApp (the only greens permitted) */
   --wa: #0f8443; /* darkened for AA with white text (~4.8:1) */
   --wa-deep: #0b6e37;
 
   /* Hairlines */
-  --hair: rgba(33, 19, 9, 0.15);
-  --hair-strong: rgba(33, 19, 9, 0.24);
-  --hair-light: rgba(246, 239, 224, 0.2);
+  --hair: rgba(1, 22, 30, 0.12);
+  --hair-strong: rgba(1, 22, 30, 0.2);
+  --hair-light: rgba(243, 238, 226, 0.18);
 
-  /* Shadow + glow system */
-  --sh-sm: 0 1px 2px rgba(33, 19, 9, 0.07), 0 3px 10px -2px rgba(33, 19, 9, 0.07);
-  --sh-md: 0 4px 10px -4px rgba(92, 21, 11, 0.16), 0 14px 34px -14px rgba(92, 21, 11, 0.22);
-  --sh-lg: 0 10px 24px -10px rgba(92, 21, 11, 0.25), 0 34px 80px -30px rgba(92, 21, 11, 0.4);
+  /* Shadow + glow system (cool ink base) */
+  --sh-sm: 0 1px 2px rgba(1, 22, 30, 0.06), 0 3px 10px -2px rgba(1, 22, 30, 0.07);
+  --sh-md: 0 4px 10px -4px rgba(1, 22, 30, 0.14), 0 14px 34px -14px rgba(1, 22, 30, 0.2);
+  --sh-lg: 0 10px 24px -10px rgba(1, 22, 30, 0.22), 0 34px 80px -30px rgba(1, 22, 30, 0.36);
   /* Glows kept low and ambient (premium light, not neon) */
-  --glow-maroon: 0 8px 30px -10px rgba(138, 36, 24, 0.4);
-  --glow-gold: 0 0 30px rgba(242, 206, 22, 0.22);
+  --glow-maroon: 0 8px 30px -10px rgba(90, 0, 5, 0.42);
+  --glow-gold: 0 0 30px rgba(217, 131, 36, 0.26);
   --glow-wa: 0 10px 30px -10px rgba(23, 166, 83, 0.45);
 
   /* Type families */

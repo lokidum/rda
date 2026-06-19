@@ -30,12 +30,14 @@
 <script>
   const canvas = document.getElementById('ambient') as HTMLCanvasElement | null;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // skip the WebGL layer on phones / small screens for performance (CSS glows carry it)
+  const small = matchMedia('(max-width: 760px)').matches;
 
   function remove() {
     canvas?.remove();
   }
 
-  if (!canvas || reduce) {
+  if (!canvas || reduce || small) {
     remove();
   } else {
     const gl = canvas.getContext('webgl', {
@@ -73,8 +75,8 @@
           float m = pool(uv, c1, 0.72 * asp);
           float g = pool(uv, c2, 0.6 * asp);
           float m2 = pool(uv, c3, 0.5 * asp);
-          vec3 maroon = vec3(0.541, 0.141, 0.094);
-          vec3 gold = vec3(0.949, 0.808, 0.086);
+          vec3 maroon = vec3(0.353, 0.0, 0.02);
+          vec3 gold = vec3(0.851, 0.514, 0.141);
           vec3 col = maroon * (m * 0.5 + m2 * 0.28) + gold * (g * 0.2);
           float a = m * 0.42 + g * 0.18 + m2 * 0.22;
           float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453 + u_time);

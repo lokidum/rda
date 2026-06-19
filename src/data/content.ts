@@ -44,7 +44,7 @@ export const nav = [
 
 /* ---------- ticker (hero trust strip) ---------- */
 export const ticker = [
-  '20-plus years on Adelaide roads',
+  'On Adelaide roads since 2007',
   'Automatic dual-control cars',
   'Lessons 7 days a week',
   'English, Tamil and Hindi',
@@ -54,14 +54,14 @@ export const ticker = [
 
 /* ---------- hero ---------- */
 export const hero = {
-  eyebrow: 'Adelaide · 20+ years of quiet confidence',
+  eyebrow: 'Adelaide · Quiet confidence since 2007',
   // Headline rises word by word. "Calmly." is the italic accent word.
   headline: ['Master', 'the', 'Adelaide', 'roads.'],
   accent: 'Calmly.',
-  lede: 'Patient, expert driving lessons from an instructor who has taught Adelaide for over 20 years. Learners, overseas licence holders and nervous drivers all welcome.',
+  lede: 'Patient, expert driving lessons from an instructor who has taught Adelaide since 2007. Learners, overseas licence holders and nervous drivers all welcome.',
   // Only truthful stats (CONTENT.md section 2): no student count or pass rate.
   stats: [
-    { value: '20+ yrs', label: 'On Adelaide roads' },
+    { value: 'Since 2007', label: 'On Adelaide roads' },
     { value: '7 days', label: 'Flexible lesson times' },
     { value: '1 chat', label: 'Is all it takes to book' },
   ],
@@ -72,7 +72,7 @@ export const hero = {
 export const manifesto = {
   label: 'The Rams philosophy',
   // Split into runs; {pill:slug} markers are replaced with the inline image.
-  text: 'I have taught Adelaide drivers for more than twenty years. {pill:inline-city} Every learner is different, so every lesson is too. We go at your pace, in a calm car, with no judgement and no rush. {pill:inline-keys} Whether you are starting on your Ls, bringing an overseas licence across, or just getting your confidence back, you are in good hands.',
+  text: 'I have taught Adelaide drivers since 2007. {pill:inline-city} Every learner is different, so every lesson is too. We go at your pace, in a calm car, with no judgement and no rush. {pill:inline-keys} Whether you are starting on your Ls, bringing an overseas licence across, or just getting your confidence back, you are in good hands.',
   signName: 'Barani Kumar',
   signRole: 'Founder and principal instructor',
 } as const;
@@ -203,7 +203,7 @@ export const fleet = {
   body: 'No surprises on test day. You practise in the exact car you sit your test in, so the pedals, the mirrors and the feel are already second nature.',
   // Truthful, count-up friendly stats only.
   stats: [
-    { count: 20, suffix: '+', label: 'Years teaching Adelaide' },
+    { count: 18, suffix: '+', label: 'Years teaching Adelaide' },
     { count: 7, suffix: ' days', label: 'Available every week' },
     { count: 3, suffix: '', label: 'Languages: English, Tamil, Hindi' },
   ],
@@ -292,14 +292,11 @@ export const reviews: Review[] = [
   },
 ];
 
-// Feature quote pulled from one of the placeholder reviews above.
+// Feature quote pulled from the real student reviews above.
 export const featureQuote = {
   text: 'A few calm lessons and I passed first go. Could not recommend Rams <span class="it">more.</span>',
   cite: 'Priya · Licence conversion',
 } as const;
-
-export const reviewNote =
-  'Example student voices, shown until verified reviews are collected.';
 
 /* ---------- FAQ ---------- */
 // On-page text MUST match the FAQPage schema exactly (see SEO.md). These seven
@@ -378,12 +375,12 @@ export const funnel = {
 /* ---------- final CTA + footer ---------- */
 export const finalCta = {
   heading: ['Ready when', 'you', 'are.'],
-  body: 'Let us get you on the road. One message, a patient instructor, and twenty years of Adelaide roads in the passenger seat. The rest is just practice.',
+  body: 'Let us get you on the road. One message, a patient instructor, and nearly two decades of Adelaide roads in the passenger seat. The rest is just practice.',
 } as const;
 
 export const footer = {
   blurb:
-    'Patient, expert driving instruction across Adelaide for over 20 years. Learner to P training, international licence conversion, refresher lessons and test day car hire, all booked with one simple WhatsApp message.',
+    'Patient, expert driving instruction across Adelaide since 2007. Learner to P training, international licence conversion, refresher lessons and test day car hire, all booked with one simple WhatsApp message.',
   explore: [
     { href: '#services', label: 'Lessons and prices' },
     { href: '#experience', label: 'The experience' },
@@ -444,6 +441,13 @@ export const images: Record<string, ImageSlot> = {
     h: 1440,
     alt: 'Rams Driving Academy dual-control automatic car',
     shot: 'The actual dual-control car, clean, three-quarter angle',
+  },
+  'on-road': {
+    file: 'on-road.jpg',
+    w: 1900,
+    h: 1060,
+    alt: 'Barani Kumar with the Rams Driving Academy car on an Adelaide street',
+    shot: 'The instructor and the academy car, on the road',
   },
   adelaide: {
     file: 'adelaide.jpg',

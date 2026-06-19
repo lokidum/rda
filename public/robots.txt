@@ -24,5 +24,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# TODO(loki): swap the domain once registered.
-Sitemap: https://ramsdrivingacademy.com.au/sitemap.xml
+Sitemap: https://ramsdrivingacademy.com/sitemap.xml

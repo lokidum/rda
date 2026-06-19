@@ -61,7 +61,8 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track" id="tickerTrack">
-    {ticker.map((t) => <span>{t} <i class="sep"></i></span>)}
+    {/* rendered twice so the translateX(-50%) loop is seamless (no gap) */}
+    {[...ticker, ...ticker].map((t) => <span>{t} <i class="sep"></i></span>)}
   </div>
 </div>
 
@@ -84,8 +85,8 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     inset: 0;
     z-index: 3;
     background:
-      linear-gradient(180deg, rgba(20, 11, 6, 0.52), rgba(20, 11, 6, 0.12) 32%, rgba(20, 11, 6, 0.22) 58%, rgba(20, 11, 6, 0.86)),
-      radial-gradient(130% 95% at 16% 90%, rgba(92, 21, 11, 0.6), transparent 56%);
+      linear-gradient(180deg, rgba(1, 14, 20, 0.52), rgba(1, 14, 20, 0.12) 32%, rgba(1, 14, 20, 0.22) 58%, rgba(1, 14, 20, 0.86)),
+      radial-gradient(130% 95% at 16% 90%, rgba(1, 22, 30, 0.6), transparent 56%);
   }
   .glow {
     position: absolute;
@@ -100,12 +101,12 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     pointer-events: none;
   }
   .glow.g1 {
-    background: radial-gradient(circle, rgba(242, 206, 22, 0.22), transparent 65%);
+    background: radial-gradient(circle, rgba(217, 131, 36, 0.22), transparent 65%);
     bottom: -22%;
     right: -14%;
   }
   .glow.g2 {
-    background: radial-gradient(circle, rgba(165, 51, 33, 0.4), transparent 65%);
+    background: radial-gradient(circle, rgba(122, 10, 16, 0.4), transparent 65%);
     top: -18%;
     left: -12%;
   }
@@ -174,7 +175,7 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     font-weight: 700;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(246, 239, 224, 0.95);
+    color: rgba(243, 238, 226, 0.95);
     margin-bottom: 26px;
   }
   .hero-eyebrow::before {
@@ -214,7 +215,7 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
   .lede {
     max-width: 46ch;
     font-size: 1.07rem;
-    color: rgba(246, 239, 224, 0.94);
+    color: rgba(243, 238, 226, 0.94);
     margin: 26px 0 36px;
     font-weight: 400;
     text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
@@ -227,7 +228,7 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
   .hero-foot {
     position: relative;
     z-index: 4;
-    border-top: 1px solid rgba(246, 239, 224, 0.24);
+    border-top: 1px solid rgba(243, 238, 226, 0.24);
   }
   .hero-stats {
     display: grid;
@@ -248,7 +249,7 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     font-size: 0.7rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(246, 239, 224, 0.78);
+    color: rgba(243, 238, 226, 0.78);
     font-weight: 600;
   }
   .scroll-cue {
@@ -258,13 +259,13 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     font-size: 0.68rem;
     letter-spacing: 0.26em;
     text-transform: uppercase;
-    color: rgba(246, 239, 224, 0.8);
+    color: rgba(243, 238, 226, 0.8);
     font-weight: 600;
   }
   .scroll-cue .line {
     width: 1px;
     height: 34px;
-    background: rgba(246, 239, 224, 0.45);
+    background: rgba(243, 238, 226, 0.45);
     position: relative;
     overflow: hidden;
   }
@@ -316,7 +317,7 @@ const fullHeadline = `${hero.headline.join(' ')} ${hero.accent}`;
     border-radius: 50%;
     background: var(--gold);
     flex: none;
-    box-shadow: 0 0 10px rgba(242, 206, 22, 0.7);
+    box-shadow: 0 0 10px rgba(217, 131, 36, 0.7);
   }
   @keyframes ticker-run {
     to { transform: translateX(-50%); }

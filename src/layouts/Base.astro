@@ -23,10 +23,10 @@ import WaIcon from '../components/WaIcon.astro';
 
 // TODO(loki): swap the placeholder domain for the real one (also in robots.txt,
 // llms.txt, sitemap.xml, and the geo.position if Dad has a base suburb).
-const SITE = Astro.site?.href ?? 'https://ramsdrivingacademy.com.au/';
+const SITE = Astro.site?.href ?? 'https://ramsdrivingacademy.com/';
 const canonical = new URL('/', SITE).href;
 
-const title = 'Rams Driving Academy | Driving Lessons Adelaide, 20+ Years';
+const title = 'Rams Driving Academy | Driving Lessons Adelaide Since 2007';
 const description =
   'Patient, expert driving lessons in Adelaide. Learner to P, overseas licence conversion and refresher lessons in automatic dual-control cars. Book on WhatsApp.';
 const ogImage = new URL('/images/hero.jpg', SITE).href;
@@ -61,7 +61,7 @@ const drivingSchool = {
   '@type': 'DrivingSchool',
   name: brand.name,
   description:
-    'Adelaide driving school with over 20 years of experience. Learner to P training, overseas licence conversion and refresher lessons in automatic dual-control cars. Welcoming to learners from all backgrounds, including South Asian and international arrivals.',
+    'Adelaide driving school established in 2007. Learner to P training, overseas licence conversion and refresher lessons in automatic dual-control cars. Welcoming to learners from all backgrounds, including South Asian and international arrivals.',
   url: canonical,
   telephone: phone.call,
   priceRange: '$$',
@@ -118,7 +118,7 @@ const breadcrumb = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content="index,follow,max-image-preview:large" />
-    <meta name="theme-color" content="#1B110B" />
+    <meta name="theme-color" content="#01161E" />
 
     <!-- Geo signals (Adelaide CBD placeholder coordinates) -->
     <meta name="geo.region" content="AU-SA" />
@@ -205,7 +205,7 @@ const breadcrumb = {
         <p class="foot-smallprint">{footerData.smallprint}</p>
         <div class="foot-bottom">
           <span>&copy; <span id="yr"></span> {brand.name}. All rights reserved.</span>
-          <span>Driving lessons &middot; Adelaide SA &middot; Est. 20+ years</span>
+          <span>Driving lessons &middot; Adelaide SA &middot; Est. 2007</span>
         </div>
       </div>
     </footer>
@@ -252,7 +252,7 @@ const breadcrumb = {
 <style>
   footer {
     background: var(--dark);
-    color: rgba(246, 239, 224, 0.82);
+    color: rgba(243, 238, 226, 0.82);
     padding: 64px 0 36px;
     border-top: 2px solid var(--maroon);
     position: relative;
@@ -314,7 +314,7 @@ const breadcrumb = {
     gap: 14px;
     flex-wrap: wrap;
     font-size: 0.76rem;
-    color: rgba(246, 239, 224, 0.6);
+    color: rgba(243, 238, 226, 0.6);
     letter-spacing: 0.04em;
   }
   @media (max-width: 920px) {
